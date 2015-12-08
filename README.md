@@ -9,12 +9,12 @@ program.
 
 The API supports two payment processing flows –
 
-1. the **_Authorise and Complete_** payment process where a single request made
+1. the "_**Authorise and Complete**_" payment process where a single request made
 using the API coupled with any redirection that may be required to direct the
 Customer Browser to the Hosted Form results in both authorization of the
 relevant payment, and the necessary completion of the payment request to achieve
 the transfer of funds from the Customer to the Merchant; and
-2. the **_Pre-authorise_** payment process where request made using the API
+2. the "_**Pre-authorise**_" payment process where request made using the API
 coupled with any redirection that may be required to direct the Customer
 Browser to the Hosted Form only results in obtaining, from the Acquirer, a
 pre-authorisation for the relevant payment where a sequent completion step must
@@ -58,7 +58,7 @@ Browser from the PayLink hosted payment form to the URL endpoint provided by
 the Merchant Application to the PayLink when the original PayLink token was
 requested through configuration of the relevant PayLinkRequest instance.
 
-### Hosted Form "Authorise and Complete" process
+### Hosted Form "_**Authorise and Complete**_" process
 
     //
     //  Create an appropriate PaymentRequest object, initialized with the
@@ -162,9 +162,9 @@ applications is not presently settled.
 
 ## Direct Request payment processing
 
-### Direct Request "_Authorise and Complete_" payment process
+### Direct Request "_**Authorise and Complete**_" payment process
 
-An _**Authorise and Complete**_ transaction by direct request involves the
+An "_**Authorise and Complete**_" transaction by direct request involves the
 Merchant Application submitting payment card details to PayPost to obtain
 authorization for the transaction and to draw the authorized amount down from
 the payment card issuer for the purpose of onward settlement to the Merchant.
@@ -413,9 +413,9 @@ named values –
 
 ### Direct Request **Pre-authorised** transaction process
 
-The pre-authorised transaction is performed in essentially the same was as an
-**Authorise and Complete** transaction: whether a transaction is performed as a
-pre-authorised transaction, or as an **Authorise and Complete** transaction is
+The pre-authorised transaction is performed in essentially the same as an
+"_**Authorise and Complete**_" transaction. Whether a transaction is performed as a
+pre-authorised transaction, or as an _**Authorise and Complete**_ transaction is
 determined by configuration of the Merchant profile by the Service Provider.
 
 ### Direct Request **Complete** transaction process
