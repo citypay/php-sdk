@@ -15,6 +15,11 @@ class ApiEndpoints {
     //
     //
     //
+    const DEFAULT_NOTIFY_ACS_RESULT_ENDPOINT_URL = "https://secure.citypay.com/paypost/api";
+    
+    //
+    //
+    //
     const DEFAULT_REFUND_ENDPOINT_URL = "https://";
     
     //
@@ -31,6 +36,11 @@ class ApiEndpoints {
     //
     //
     private static $saleEndpoint;
+    
+    //
+    //
+    //
+    private static $notifyAcsResultEndpoint;
     
     //
     //
@@ -52,7 +62,8 @@ class ApiEndpoints {
      */
     public static function sale() {
         if (!isset(self::$saleEndpoint)) {
-            self::$saleEndpoint = new ApiEndpoint(self::DEFAULT_SALE_ENDPOINT_URL);
+            self::$saleEndpoint
+                = new ApiEndpoint(self::DEFAULT_SALE_ENDPOINT_URL);
         }
         
         return self::$saleEndpoint;
@@ -61,9 +72,22 @@ class ApiEndpoints {
     /**
      * 
      */
+    public static function notifyAcsResult() {
+        if (!isset(self::$notifyAcsResultEndpoint)) {
+            self::$notifyAcsResultEndpoint
+                = new ApiEndpoint(self::DEFAULT_NOTIFY_ACS_RESULT_ENDPOINT_URL);
+        }
+        
+        return self::$notifyAcsResultEndpoint;
+    }
+    
+    /**
+     * 
+     */
     public static function refund() {
         if (!isset(self::$refundEndpoint)) {
-            self::$refundEndpoint = new ApiEndpoint(self::DEFAULT_REFUND_ENDPOINT_URL);
+            self::$refundEndpoint
+                = new ApiEndpoint(self::DEFAULT_REFUND_ENDPOINT_URL);
         }
         
         return self::$refundEndpoint;
@@ -74,7 +98,8 @@ class ApiEndpoints {
      */
     public static function cancel() {
         if (!isset(self::$cancelEndpoint)) {
-            self::$cancelEndpoint = new ApiEndpoint(self::DEFAULT_CANCEL_ENDPOINT_URL);
+            self::$cancelEndpoint
+                = new ApiEndpoint(self::DEFAULT_CANCEL_ENDPOINT_URL);
         }
         
         return self::$cancelEndpoint;
@@ -85,7 +110,8 @@ class ApiEndpoints {
      */
     public static function complete() {
         if (!isset(self::$completeEndpoint)) {
-            self::$completeEndpoint = new ApiEndpoint(self::DEFAULT_COMPLETE_ENDPOINT_URL);
+            self::$completeEndpoint
+                = new ApiEndpoint(self::DEFAULT_COMPLETE_ENDPOINT_URL);
         }
         
         return self::$completeEndpoint;
