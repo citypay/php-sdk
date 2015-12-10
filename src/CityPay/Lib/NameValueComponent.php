@@ -18,7 +18,9 @@ trait NameValueComponent
     /**
      *
      */
-    function __construct() {
+    function initialiseNameValueComponent(
+        $apiConfig = \CityPay\Config\DefaultConfig::class
+    ) {
         $this->mapNameValue = array();
     }
 

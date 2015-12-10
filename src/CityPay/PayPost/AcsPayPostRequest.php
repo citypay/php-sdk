@@ -10,10 +10,13 @@ class AcsPayPostRequest
     extends PayPostRequest
 {
     /**
-     *
+     * 
+     * @param type $apiConfig
      */
-    function __construct() {
-        parent::__construct();
+    function __construct(
+        $apiConfig = \CityPay\Config\DefaultConfig::class
+    ) {
+        parent::__construct($apiConfig);
     }
     
     /**

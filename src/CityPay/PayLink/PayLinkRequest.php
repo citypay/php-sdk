@@ -14,8 +14,10 @@ class PayLinkRequest
     /**
      *
      */
-    function __construct() {
-        parent::__construct();
+    function __construct(
+        $apiConfig = \CityPay\Config\DefaultConfig::class
+    ) {
+        parent::__construct($apiConfig);
     }
 
     /**

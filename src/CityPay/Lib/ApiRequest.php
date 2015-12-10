@@ -18,9 +18,20 @@ abstract class ApiRequest
     
     /**
      * 
+     * @param type $apiConfig
      */
-    function __construct() {
+    function __construct(
+        $apiConfig = \CityPay\Config\DefaultConfig::class
+    ) {
+        if (!is_subclass_of($apiConfig, \CityPay\Config\RuntimeConfig::class)) {
+            throw new \InvalidArgumentException();
+        }
         
+        self::initialiseNameValueComponent($apiConfig);
+        self::set(
+            "test",
+            ($apiConfig::isApiTestingEnabled() ? "true" : "false")
+        );
     }
     
     /**

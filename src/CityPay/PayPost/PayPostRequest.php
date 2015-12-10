@@ -15,11 +15,13 @@ class PayPostRequest
     use CardholderAccount;
     
     /**
-     *
+     * 
+     * @param type $apiConfig
      */
-    function __construct() {
-        parent::__construct();
-        self::set("test", "true");
+    function __construct(
+        $apiConfig = \CityPay\Config\DefaultConfig::class
+    ) {
+        parent::__construct($apiConfig);
     }
     
     /**
