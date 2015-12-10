@@ -2,16 +2,17 @@
 namespace CityPay\Lib;
 
 use CityPay\Lib\Rpc\HttpsRpc;
+use CityPay\Encoding\Serializable;
 use CityPay\Encoding\Json\JsonSerializable;
-use CityPay\Encoding\FormUrl\FormUrlCodec;
-use CityPay\Encoding\Json\JsonCodec;
-use CityPay\Encoding\Xml\XmlCodec;
+use CityPay\Encoding\FormUrl\FormUrlSerializable;
 
 /**
  * 
  */
 abstract class ApiRequest
-    implements JsonSerializable
+    implements Serializable,
+        FormUrlSerializable,
+        JsonSerializable
 {
     use \CityPay\Lib\NameValueComponent;
     
@@ -77,7 +78,7 @@ abstract class ApiRequest
         $contentType,
         $responseContentType,
         &$deserializedPayload
-    ) {      
+    ) {
         //
         //  Create responsePayload variable to pass by reference to
         //  HttpsRpc::invoke.
@@ -90,7 +91,7 @@ abstract class ApiRequest
         $responseCode = HttpsRpc::invoke(
             $apiEndpoint->getUrl(),
             $contentType,
-            $this->mapNameValue,
+            $this,
             $responseContentType,
             $deserializedPayload
         );
@@ -99,8 +100,15 @@ abstract class ApiRequest
     }
     
     /**
+     * @return array
+     */
+    public function formUrlSerialize() {
+        return $this->mapNameValue;
+    }
+    
+    /**
      * 
-     * @return type
+     * @return array
      */
     public function jsonSerialize() {
         return $this->mapNameValue;

@@ -12,6 +12,8 @@ use CityPay\Lib\InvalidGatewayResponseException;
 class PayPostRequest
     extends ApiRequest
 {
+    use CardholderAccount;
+    
     /**
      *
      */

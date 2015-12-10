@@ -12,8 +12,13 @@ class FormUrlCodec
     public static function encode(
         $object
     ) {
-        $x = http_build_query($object);
-        return $x;
+        if ($object instanceof FormUrlSerializable) {
+            $o = $object->formUrlSerialize();
+        } else {
+            $o = $object;
+        }
+        
+        return http_build_query($o);
     }
 
     public static function decode(

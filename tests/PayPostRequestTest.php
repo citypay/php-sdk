@@ -10,26 +10,33 @@ class PayPostRequestTest
 {
     use ClientConfiguration;
     
-    //
-    //
-    //
+    /**
+     * 
+     */
     const SALE = 0;
     
-    //
-    //
-    //
+    /**
+     * 
+     */
     const REFUND = 1;
     
-    //
-    //
-    //
+    /**
+     * 
+     */
     const CANCEL = 2;
     
-    //
-    //
-    //
+    /**
+     * 
+     */
     const COMPLETE = 3;
     
+    /**
+     * 
+     * @param type $action
+     * @param type $caller
+     * @param type $payPostRequest
+     * @return type
+     */
     private function execute(
         $action,
         $caller,
@@ -103,13 +110,16 @@ class PayPostRequestTest
 
     }
 
+    /**
+     * 
+     */
     public function testSuccessfulSale()
     {
         $ppr = new \CityPay\PayPost\PayPostRequest();
         
         $ppr->merchantId(self::getElectronicCommerceLowPassMID())
             ->licenceKey(self::getElectronicCommerceLowPassLicenceKey())
-            ->identifier("PayPost_PHPSDK_SuccessfulSaleTest")
+            ->identifier("PayPost_PHP_SDK_SuccessfulSaleTest")
             ->amount(5000)
             ->currency("GBP")
             ->billToName("Mr Square")
@@ -131,13 +141,16 @@ class PayPostRequestTest
         );
     }
 
+    /**
+     * 
+     */
     public function testDeclinedSale()
     {
         $ppr = new \CityPay\PayPost\PayPostRequest();
         
         $ppr->merchantId(self::getElectronicCommerceLowPassMID())
             ->licenceKey(self::getElectronicCommerceLowPassLicenceKey())
-            ->identifier("PayPost_PHPSDK_DeclinedSaleTest")
+            ->identifier("PayPost_PHP_SDK_DeclinedSaleTest")
             ->amount(3333)
             ->currency("GBP")
             ->billToName("Mr Round")
@@ -159,7 +172,9 @@ class PayPostRequestTest
         );
     }
     
-
+    /**
+     * 
+     */
     public function testThreeDSSale() {
         //
         //
@@ -167,7 +182,7 @@ class PayPostRequestTest
         $appr = (new AcsPayPostRequest())
             ->merchantId(self::getElectronicCommerceHighPassMID())
             ->licenceKey(self::getElectronicCommerceHighPassLicenceKey())
-            ->identifier("PayPost_JavaSDK_ThreeDSSaleTest")
+            ->identifier("PayPost_PHPSDK_ThreeDSSaleTest")
             ->amount(5000)
             ->currency("GBP")
             ->billToName("<name>")
@@ -190,7 +205,79 @@ class PayPostRequestTest
             $appr
         );
     }
+    
+    /**
+     * 
+     */
+    public function testCardHolderAccountSetupAndContinuousAuthorityTransaction() {
+        //
+        //
+        //
+        $ppr_cha = (new PayPostRequest())
+            ->merchantId(self::getElectronicCommerceCardholderAccountMID())
+            ->licenceKey(self::getElectronicCommerceCardholderAccountLicenceKey())
+            ->identifier("PayPost_PHPSDK_CHA_CA_Test_SetupTX")
+            ->amount(5000)
+            ->currency("GBP")
+            ->cardNumber("4000000000000002")
+            ->expiryMonth(12)
+            ->expiryYear(2016)
+            ->accountNo("ABC")
+            ->firstname("James")
+            ->lastname("Square");
+        
+        $ppr_cha->billToName("James T Square")
+            ->billToPostCode("JE2 3RL")
+            ->csc("123");
+        
+        $apiMessage = self::execute(
+            self::SALE,
+            "testCardHolderAccountSetupAndContinuousAuthorityTransaction",
+            $ppr_cha
+        );
+        
+        $this->assertTrue(
+            ($apiMessage instanceof PayPostResponse),
+            "ApiMessage [ppr_cha] is not of type \CityPay\PayPost\PayPostResponse ("
+                .get_class($apiMessage)
+                .")"
+        );
+        
+        $this->assertTrue(
+            $apiMessage->isAuthorised(),
+            "Cardholder Account creating PayPostRequest failed"
+        );
+        
+        $ppr_ca = (new PayPostRequest())
+            ->merchantId(self::getElectronicCommerceContinuousAuthorityMID())
+            ->licenceKey(self::getElectronicCommerceContinuousAuthorityLicenceKey())
+            ->identifier("PayPost_PHPSDK_CHA_CA_Test_CATX")
+            ->amount(6000)
+            ->currency("GBP")
+            ->accountNo("ABC");
+        
+        $apiMessage = self::execute(
+            self::SALE,
+            "testCardHolderAccountSetupAndContinuousAuthorityTransaction",
+            $ppr_ca
+        );
 
+        $this->assertTrue(
+            ($apiMessage instanceof PayPostResponse),
+            "ApiMessage [ppr_ca] is not of type \CityPay\PayPost\PayPostResponse ("
+                .get_class($apiMessage)
+                .")"
+        );
+        
+        $this->assertTrue(
+            $apiMessage->isAuthorised(),
+            "Continuous Authority transaction PayPostRequest failed"
+        );
+    }
+
+    /**
+     * 
+     */
     public function testRefund() {
         //
         //
@@ -198,6 +285,9 @@ class PayPostRequestTest
 
     }
 
+    /**
+     * 
+     */
     public function testSuccessfulPreAuthoriseAndCancel() {
         //
         //
@@ -205,7 +295,7 @@ class PayPostRequestTest
         $ppr = (new PayPostRequest())
             ->merchantId(self::getElectronicCommerceLowPassMID())
             ->licenceKey(self::getElectronicCommerceLowPassLicenceKey())
-            ->identifier("PayPost_PHPSDK_SuccessPreAuthCancelTest")
+            ->identifier("PayPost_PHP_SDK_SuccessPreAuthCancelTest")
             ->amount(5000)
             ->currency("GBP")
             ->billToName("Mr Taggart")
@@ -269,6 +359,9 @@ class PayPostRequestTest
         }
     }
 
+    /**
+     * 
+     */
     public function testSuccessfulPreAuthoriseAndComplete() {
         //
         //
@@ -276,7 +369,7 @@ class PayPostRequestTest
         $ppr = (new PayPostRequest())
             ->merchantId(self::getElectronicCommerceLowPassMID())
             ->licenceKey(self::getElectronicCommerceLowPassLicenceKey())
-            ->identifier("PayPost_JavaSDK_SuccessPreAuthCompleteTest")
+            ->identifier("PayPost_PHP_SDK_SuccessPreAuthCompleteTest")
             ->amount(5000)
             ->currency("GBP")
             ->billToName("Mr Taggart")
@@ -341,6 +434,9 @@ class PayPostRequestTest
         }
     }
 
+    /**
+     * 
+     */
     public function testComplete() {
         //
         //
@@ -348,7 +444,7 @@ class PayPostRequestTest
         $cppr = (new PayPostRequest())
             ->merchantId(self::getElectronicCommerceLowPassMID())
             ->licenceKey(self::getElectronicCommerceLowPassLicenceKey())
-            ->identifier("PayPost_JavaSDK_CompleteSaleTest")
+            ->identifier("PayPost_PHP_SDK_CompleteSaleTest")
             ->amount(5000)
             ->currency("GBP")
             ->billToName("<name>")

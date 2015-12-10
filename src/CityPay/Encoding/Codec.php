@@ -9,6 +9,18 @@ use CityPay\Encoding\Deserializable;
 define('DESERIALIZABLE_INTERFACE', 'CityPay\Encoding\Deserializable');
 
 /**
+ * The Codec class is intended to provide a combination of -
+ * 
+ * (1)  base uniform interface for encoding format coder / decoder modules;
+ *      and
+ * 
+ * (2)  generic factory functions for objects that are capable of
+ *      being de-serialised by reference to data structured in the
+ *      format ordinarily provided by objects implementing the Serializable
+ *      interface: an associative array.
+ * 
+ *      Note: these factory functions may be moved to a specific deserializable 
+ *      object factory class in the near course.
  * 
  */
 class Codec
