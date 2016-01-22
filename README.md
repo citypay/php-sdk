@@ -1,17 +1,17 @@
 # CityPay SDK for PHP
 ## Structural overview
-The CityPay SDK for PHP application programming interface ("**API**") is structured
-generally in terms of providing a Request object, invoking some operation and
-receiving a Response object that may be processed in the ordinary flow of the
-program.
+The CityPay SDK for PHP application programming interface ("**API**") is
+structured generally in terms of providing a Request object, invoking some
+operation and receiving a Response object that may be processed in the ordinary
+flow of the program.
 
 ### Supported payment processing flows
 
 The API supports two payment processing flows –
 
-1. the "_**Authorise and Complete**_" payment process where a single request made
-using the API coupled with any redirection that may be required to direct the
-Customer Browser to the Hosted Form results in both authorization of the
+1. the "_**Authorise and Complete**_" payment process where a single request
+made using the API coupled with any redirection that may be required to direct
+the Customer Browser to the Hosted Form results in both authorization of the
 relevant payment, and the necessary completion of the payment request to achieve
 the transfer of funds from the Customer to the Merchant; and
 2. the "_**Pre-authorise**_" payment process where request made using the API
@@ -21,8 +21,8 @@ pre-authorisation for the relevant payment where a sequent completion step must
 be performed to achieve the transfer of funds from the Customer to the Merchant.
 
 ## Using the API in a PHP project
-The API has developed in accordance with the PHP Standards Recommendations and,
-in particular –
+The API has been developed in accordance with the PHP Standards Recommendations
+and, in particular –
 
 1. [PSR-1](http://www.php-fig.org/psr/psr-1/), the basic coding standard;
 2. [PSR-2](http://www.php-fig.org/psr/psr-2/), the coding style guide; and
@@ -282,7 +282,7 @@ those for an instance of the PayPostRequest class, apart from the following
 additional attributes.
 
 |Method|Description and purpose|
-|------|-----------------------|
+|:-----|:----------------------|
 |`merchantTermURL($merchantTermURL)`|The `$merchantTermURL` parameter is a string containing a valid URL for the endpoint provided by the Merchant Application that is responsible for forwarding the response (an encoded PaRes packet) from the ACS to PayPost confirming the authorization status of the transaction. The URL is provided at the time the transaction request is made to PayPost using the `saleTransaction()` method of the `PayPostRequest` object.|
 |`userAgent($userAgent)`|The `$userAgent` string contains the exact content of the HTTP User-Agent header as sent by the cardholder's user agent, the Customer Browser, to the Merchant Application. This value is validated by the ACS when the cardholder authenticates themselves to ensure that no intermediary is performing this action.|
 |`acceptHeaders($acceptHeaders)`|The `$acceptHeaders` string contains the exact content of the HTTP Accept header as sent by the cardholder's user agent, the Customer Browser, to the Merchant Application. This value is validated by the ACS when the card holder authenticates themselves to ensure that no intermediary is performing this action.|
@@ -297,7 +297,7 @@ transaction must be authenticated using 3D Secure.
 attributes –
 
 |Method|Description and purpose|
-|------|-----------------------|
+|:-----|:----------------------|
 |`getAcsUrl()`|The `$acsUrl` field of `PayPostAuthenticationRequiredResponse` object contains the URL of the ACS for the purpose of authenticating payment card transactions. To complete the payment card transaction, the Merchant Application must cause the Customer Browser to submit a form to the URL indicated by the `getAcsUrl()` method using a HTTP POST operation. The contents of the form is indicated below.|
 |`getPaReq()`|The `$paReq` field of the response object contains an encoded string received from the payment card issuer in response to a 3D Secure transaction authentication request made by PayPost. The Merchant Application must forward this encoded string to the ACS when redirecting the Customer Browser to the ACS.|
 |`getMd()`|The `$md` (merchant data) field of the response object contains a session / transaction identifier that must be transmitted to the ACS, by the Merchant Application, to maintain continuity of the transaction process.|
@@ -336,7 +336,7 @@ accompanying the HTTP POST request is encoded using the
 named values –
 
 |Name|Type|Description or purpose|
-|----|----|----------------------|
+|:---|:---|:---------------------|
 |`pares`|string|The `paRes` field of the relevant response object contains an encoded string received from the payment card issuer in response to a 3D Secure transaction authentication request made by PayPost. The Merchant Application must forward this encoded string to the ACS when redirecting the Customer Browser to the ACS.|
 |`md`|string|The `md` (merchant data) field of the response object contains a session / transaction identifier that must be transmitted to the ACS, by the Merchant Application, to maintain continuity of the transaction process.|
 
