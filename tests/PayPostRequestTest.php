@@ -431,6 +431,7 @@ class PayPostRequestTest
             //
             $this->assertTrue($completeApiMessage->getAuthResult() == 1);
 
+            var_dump($completeApiMessage);
         }
     }
 
