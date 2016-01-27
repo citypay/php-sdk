@@ -24,26 +24,31 @@ class PciDss {
         array $array,
         array $elementTypeMap
     ) {
+        $output = array();
         foreach($array as $key => $value) {
-            echo $key;
-            echo $value;
-            
-            switch ($elementTypeMap[$key]) {
-                case static::INSENSITIVE:
-                    break;
-                
-                case static::CARDNUMBER:
-                    $array[$key] = static::sanitizeCardNumber($value);
-                    break;
-                
-                case static::CSC:
-                    $array[$key] = static::sanitizeCsc($value);
-                    break;
-                
-                default:
-                    break;
+            if (array_key_exists($key, $elementTypeMap)) {
+                $elementType = $elementTypeMap[$key];
+                switch ($elementType) {
+                    case static::INSENSITIVE:
+                        break;
+
+                    case static::CARDNUMBER:
+                        $output[$key] = static::sanitizeCardNumber($value);
+                        break;
+
+                    case static::CSC:
+                        $output[$key] = static::sanitizeCsc($value);
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                $output[$key] = $value;
             }
         }
+        
+        return $output;
     }
     
     /**
@@ -186,6 +191,14 @@ class PciDss {
      * @return string
      */
     public static function sanitizeCsc($value) {
-        return '***';
+        $i_max = strlen($value);
+        if ($i_max > 0x00 && ctype_digit($value)) {
+            return str_repeat('*', $i_max);
+        } else {
+            $o = preg_replace('([A-Za-z])', 'a', $value);
+            $o = preg_replace('([0-9])', 'n', $o);
+            $o = preg_replace('([^0-9A-Za-z])', 'x', $o);
+            return $o;
+        }
     }
 }

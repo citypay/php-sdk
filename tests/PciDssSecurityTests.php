@@ -93,13 +93,22 @@ class PciDssSecurityTest
         $this->assertTrue($s === "***");
         
         $s = PciDss::sanitizeCsc("12");
-        $this->assertTrue($s === "***");
+        $this->assertTrue($s === "**");
         
         $s = PciDss::sanitizeCsc("1");
-        $this->assertTrue($s === "***");
+        $this->assertTrue($s === "*");
         
         $s = PciDss::sanitizeCsc("1234");
-        $this->assertTrue($s === "***");
+        $this->assertTrue($s === "****");
+        
+        $s = PciDss::sanitizeCsc("12a4");
+        $this->assertTrue($s === "nnan");
+        
+        $s = PciDss::sanitizeCsc("1B34");
+        $this->assertTrue($s === "nann");
+        
+        $s = PciDss::sanitizeCsc("12.4");
+        $this->assertTrue($s === "nnxn");
     }
     
     /**
@@ -107,5 +116,73 @@ class PciDssSecurityTest
      */
     public function testSanitizeAssociativeArrayElements() {
         
+        $a = array(
+            'a' => '4000000000000002',
+            'b' => '4000000000000002',
+            'c' => '4000000000000002',
+            'd' => '4000000000000002',
+            'e' => '4000000000000002',
+            'f' => '1234',
+            'g' => '1234',
+            'h' => '1234',
+            'i' => '1234',
+            'j' => '1234',
+            'k' => '12345678',
+            'l' => '123456789',
+            'm' => '1234567890',
+            'n' => '12345678901',
+            'o' => '123456789012',
+            'p' => '1234567890123',
+            'q' => '12345678901234',
+            'r' => '123456789012345'
+        );
+        
+        $b = PciDss::sanitizeAssociativeArrayElements(
+            $a,
+            array(
+                'c' => PciDss::CARDNUMBER,
+                'd' => PciDss::CSC,
+                'h' => PciDss::CSC,
+                'i' => PciDss::CARDNUMBER,
+                'k' => PciDss::CARDNUMBER,
+                'l' => PciDss::CARDNUMBER,
+                'm' => PciDss::CARDNUMBER,
+                'n' => PciDss::CARDNUMBER,
+                'o' => PciDss::CARDNUMBER,
+                'p' => PciDss::CARDNUMBER,
+                'q' => PciDss::CARDNUMBER,
+                'r' => PciDss::CARDNUMBER
+            )
+        );
+            
+        $c = array(
+            'a' => '4000000000000002',
+            'b' => '4000000000000002',
+            'c' => '400000******0002',
+            'd' => '****************',
+            'e' => '4000000000000002',
+            'f' => '1234',
+            'g' => '1234',
+            'h' => '****',
+            'i' => '1234',
+            'j' => '1234',
+            'k' => 'nnnn5678',
+            'l' => 'nnnnn6789',
+            'm' => 'nnnnnn7890',
+            'n' => 'nnnnnnn8901',
+            'o' => '123456******',
+            'p' => '123456******3',
+            'q' => '123456******34',
+            'r' => '123456******345'
+        );
+
+        
+        var_dump($a);
+        var_dump($b);
+        
+        $this->assertEquals(
+            $c,
+            $b
+        );
     }
 }
