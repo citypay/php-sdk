@@ -5,19 +5,20 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 use \Logger;
+use \LoggerConfigurator;
 use \LoggerLevel;
 
 /**
  * Implements a default logger for the SDK.
  * 
  */
-class DefaultLogger
+class Log4PhpPsr3Adapter
     extends AbstractLogger
     implements LoggerInterface
 {
     use \CityPay\Lib\Logging\Interpolation;
     
-    static private $logLevelTranslation = array(
+    private static $logLevelTranslation = array(
         LogLevel::EMERGENCY => LoggerLevel::FATAL,
         LogLevel::ALERT => LoggerLevel::FATAL,
         LogLevel::CRITICAL => LoggerLevel::FATAL,
@@ -27,23 +28,37 @@ class DefaultLogger
         LogLevel::INFO => LoggerLevel::INFO,
         LogLevel::DEBUG => LoggerLevel::DEBUG
     );
-    
-    private $log4php;
+     
+    /**
+     *
+     * @var Logger 
+     */
+    private $logger;
     
     /**
+     * Constructor for the default logger which takes, as a parameter,
+     * either -
      * 
-     * @param type $name
+     * (1)  an object implementing the LoggerConfigurator interface;
+     * 
+     * OR
+     * 
+     * (2)  a string representing the path name of a file containing the
+     *      configuration for the construction of an object of type
+     *      LoggerConfiguration.
+     * 
+     * @param string|array|LoggerConfigurator $
+     * 
      */
-    function __construct($name) {
-        Logger::configure('config.xml');
-        $this->log4php = Logger::getLogger($name);
+    function __construct($logger = null) {
+        $this->logger = $logger;
     }
     
     /**
      * 
      */
     function __destruct() {
-        $this->log4php = null;
+        $this->logger = null;
     }
     
     /**
@@ -55,35 +70,35 @@ class DefaultLogger
         $msg = static::interpolate($message, $context);
         switch ($level) {
             case LogLevel::EMERGENCY:
-                $this->log4php->fatal($msg);
+                $this->logger->fatal($msg);
                 break;
                 
             case LogLevel::ALERT:
-                $this->log4php->fatal($msg);
+                $this->logger->fatal($msg);
                 break;
                 
             case LogLevel::CRITICAL:
-                $this->log4php->fatal($msg);
+                $this->logger->fatal($msg);
                 break;
                 
             case LogLevel::ERROR:
-                $this->log4php->error($msg);
+                $this->logger->error($msg);
                 break;
                 
             case LogLevel::WARNING:
-                $this->log4php->warn($msg);
+                $this->logger->warn($msg);
                 break;
             
             case LogLevel::NOTICE:
-                $this->log4php->info($msg);
+                $this->logger->info($msg);
                 break;
             
             case LogLevel::INFO:
-                $this->log4php->info($msg);
+                $this->logger->info($msg);
                 break;
             
             case LogLevel::DEBUG:
-                $this->log4php->debug($msg);
+                $this->logger->debug($msg);
                 break;
         }
     }

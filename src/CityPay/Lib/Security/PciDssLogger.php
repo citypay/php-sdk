@@ -11,8 +11,6 @@ class PciDssLogger
     extends AbstractLogger
     implements LoggerInterface
 {
-    use \CityPay\Lib\Logging\Interpolation;
-    
     /**
      *
      * @var type 
@@ -50,24 +48,13 @@ class PciDssLogger
      * @param type $message
      * @param array $context
      */
-    public function log($level, $message, array $context = array()) {
-        $msg = static::interpolate($message, $context);
-        $msg2 = static::censor($msg);
-        $this->log($level, $msg2);
-    }
-    
-    /**
-     * 
-     */
-    public function logPaymentCardDetails(
+    public function log(
         $level,
         $message,
         array $context = array(),
         array $elementTypeMap = array()
     ) {
-        
-        
-        
+        $sanitizedContext = PciDss::sanitizeAssociativeArrayElements($context, $elementTypeMap);
+        $this->logger->log($level, $message, $sanitizedContext);
     }
 }
-

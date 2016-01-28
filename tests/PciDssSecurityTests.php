@@ -116,7 +116,7 @@ class PciDssSecurityTest
      */
     public function testSanitizeAssociativeArrayElements() {
         
-        $a = array(
+        $source = array(
             'a' => '4000000000000002',
             'b' => '4000000000000002',
             'c' => '4000000000000002',
@@ -137,8 +137,8 @@ class PciDssSecurityTest
             'r' => '123456789012345'
         );
         
-        $b = PciDss::sanitizeAssociativeArrayElements(
-            $a,
+        $sanitized = PciDss::sanitizeAssociativeArrayElements(
+            $source,
             array(
                 'c' => PciDss::CARDNUMBER,
                 'd' => PciDss::CSC,
@@ -155,7 +155,7 @@ class PciDssSecurityTest
             )
         );
             
-        $c = array(
+        $expected = array(
             'a' => '4000000000000002',
             'b' => '4000000000000002',
             'c' => '400000******0002',
@@ -175,14 +175,10 @@ class PciDssSecurityTest
             'q' => '123456******34',
             'r' => '123456******345'
         );
-
-        
-        var_dump($a);
-        var_dump($b);
         
         $this->assertEquals(
-            $c,
-            $b
+            $expected,
+            $sanitized
         );
     }
 }
