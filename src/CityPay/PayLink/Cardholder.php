@@ -7,8 +7,9 @@ namespace CityPay\PayLink;
  * request.
  */
 class Cardholder
+    implements \CityPay\Lib\Security\PciDssLoggable
 {
-    use \CityPay\Lib\NameValueComponent;
+    use \CityPay\Lib\PciDssLoggableNameValueComponent;
     
     /**
      *
@@ -101,5 +102,13 @@ class Cardholder
     ) {
         self::set("userAgent", $userAgent);
         return $this;
+    }
+    
+    /**
+     * 
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array();
     }
 }

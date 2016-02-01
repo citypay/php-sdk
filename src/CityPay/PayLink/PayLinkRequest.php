@@ -5,6 +5,8 @@ use CityPay\Lib\Rpc\Http;
 use CityPay\Lib\Rpc\HttpsRpc;
 use CityPay\Lib\ApiRequest;
 
+use CityPay\Lib\Security\PciDss;
+
 /**
  * 
  */
@@ -175,5 +177,16 @@ class PayLinkRequest
         } else {
             return new TransportError($responseCode, $responsePayload);
         }
+    }
+    
+    /**
+     * 
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array(
+            'merchantId' => PciDss::MERCHANTID,
+            'licenceKey' => PciDss::LICENCEKEY,
+        );
     }
 }

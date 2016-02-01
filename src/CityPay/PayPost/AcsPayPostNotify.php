@@ -6,6 +6,7 @@ use CityPay\Lib\ApiEncoding;
 use CityPay\Lib\ApiRequest;
 use CityPay\Lib\InvalidGatewayResponseException;
 use CityPay\Lib\NamedValueNotFoundException;
+use CityPay\Lib\Security\PciDss;
 use CityPay\Encoding\Serializable;
 use CityPay\Encoding\FormUrl\FormUrlSerializable;
 
@@ -185,6 +186,17 @@ class AcsPayPostNotify
      */
     public function jsonSerialize() {
         return $this->serialize();
+    }
+    
+    /**
+     * 
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array(
+            'merchantId' => PciDss::MERCHANTID,
+            'licenceKey' => PciDss::LICENCEKEY,
+        );
     }
 }
 

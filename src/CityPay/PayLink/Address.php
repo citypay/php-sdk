@@ -5,8 +5,9 @@ namespace CityPay\PayLink;
  * 
  */
 class Address
+    implements \CityPay\Lib\Security\PciDssLoggable
 {
-    use \CityPay\Lib\NameValueComponent;
+    use \CityPay\Lib\PciDssLoggableNameValueComponent;
     
     /**
      *
@@ -76,5 +77,13 @@ class Address
     ) {
         self::set("postcode", $postcode);
         return $this;
+    }
+    
+    /**
+     * 
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array();
     }
 }

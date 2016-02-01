@@ -6,7 +6,8 @@ use CityPay\Encoding\Json\JsonCodec;
 /**
  * 
  */
-class Configuration {
+class Configuration
+{
     /**
      *
      * @var type 

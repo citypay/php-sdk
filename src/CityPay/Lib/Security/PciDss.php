@@ -6,6 +6,9 @@ class PciDss {
     const INSENSITIVE = 0x00;
     const CARDNUMBER = 0x01;
     const CSC = 0x02;
+    const CARDHOLDERACCOUNTID = 0x03;
+    const MERCHANTID = 0x04;
+    const LICENCEKEY = 0x05;
     
     /**
      * 
@@ -28,27 +31,72 @@ class PciDss {
         foreach($array as $key => $value) {
             if (array_key_exists($key, $elementTypeMap)) {
                 $elementType = $elementTypeMap[$key];
-                switch ($elementType) {
-                    case static::INSENSITIVE:
-                        break;
+                if (is_array($elementType)) {
+                    if (is_object($value)) {
+                        $output[$key] = static::sanitizeAssociativeArrayElements(
+                            get_object_vars($value),
+                            $elementType
+                        );
+                    } else if (is_array($value)) {
+                        $output[$key] = static::sanitizeAssociativeArrayElements(
+                            $value,
+                            $elementType
+                        );
+                    } else {
+                        //
+                        //  TODO: Determine behaviour on structural mismatch
+                        //  between the source array, $array, and the element
+                        //  type map, $elementTypeMap.
+                        //
+                    }
+                } else {
+                    switch ($elementType) {
+                        case static::INSENSITIVE:
+                            break;
+                        
+                        case static::MERCHANTID:
+                            $output[$key] = static::sanitizeMerchantId($value);
+                            break;
+                        
+                        case static::LICENCEKEY:
+                            $output[$key] = static::sanitizeLicenceKey($value);
+                            break;
+                        
+                        case static::CARDHOLDERACCOUNTID:
+                            $output[$key] = static::sanitizeCardHolderAccountId($value);
+                            break;
 
-                    case static::CARDNUMBER:
-                        $output[$key] = static::sanitizeCardNumber($value);
-                        break;
+                        case static::CARDNUMBER:
+                            $output[$key] = static::sanitizeCardNumber($value);
+                            break;
 
-                    case static::CSC:
-                        $output[$key] = static::sanitizeCsc($value);
-                        break;
+                        case static::CSC:
+                            $output[$key] = static::sanitizeCsc($value);
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
                 }
+                
             } else {
                 $output[$key] = $value;
             }
         }
         
         return $output;
+    }
+    
+    public static function sanitizeMerchantId($value) {
+        return "MID(".$value.")";
+    }
+    
+    public static function sanitizeLicenceKey($value) {
+        return "LK(".$value.")";
+    }
+    
+    public static function sanitizeCardHolderAccountId($value) {
+        return "CACID(".$value.")";
     }
     
     /**

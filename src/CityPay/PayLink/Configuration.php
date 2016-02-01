@@ -5,8 +5,12 @@ namespace CityPay\PayLink;
  * 
  */
 class Configuration
+    implements \CityPay\Lib\Security\PciDssLoggable
 {
-    use \CityPay\Lib\NameValueComponent;
+    /**
+     * 
+     */
+    use \CityPay\Lib\PciDssLoggableNameValueComponent;
     
     /**
      *
@@ -172,5 +176,14 @@ class Configuration
     ) {
         self::set("renderer", $renderer);
         return $this;
+    }
+    
+    /**
+     * 
+     * PciDssLoggable
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array();
     }
 }

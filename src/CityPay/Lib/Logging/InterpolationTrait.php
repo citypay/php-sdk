@@ -1,7 +1,7 @@
 <?php
 namespace CityPay\Lib\Logging;
 
-trait Interpolation
+trait InterpolationTrait
 {
     /**
      * Interpolates context values into the message placeholders.

@@ -5,6 +5,7 @@ use CityPay\Lib\Rpc\Http;
 use CityPay\Lib\ApiRequest;
 use CityPay\Lib\ApiEncoding;
 use CityPay\Lib\InvalidGatewayResponseException;
+use CityPay\Lib\Security\PciDss;
 
 /**
  * 
@@ -12,6 +13,9 @@ use CityPay\Lib\InvalidGatewayResponseException;
 class PayPostRequest
     extends ApiRequest
 {
+    /**
+     * 
+     */
     use CardholderAccount;
     
     /**
@@ -616,6 +620,17 @@ class PayPostRequest
             //  TODO: Determine better result to return
             return null;
         }
+    }
+    
+    /**
+     * 
+     * 
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap() {
+        return array(
+            'merchantId' => PciDss::MERCHANTID,
+            'licenceKey' => PciDss::LICENCEKEY,
+        );
     }
 }
 

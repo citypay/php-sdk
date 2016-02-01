@@ -16,7 +16,7 @@ class Log4PhpPsr3Adapter
     extends AbstractLogger
     implements LoggerInterface
 {
-    use \CityPay\Lib\Logging\Interpolation;
+    use \CityPay\Lib\Logging\InterpolationTrait;
     
     private static $logLevelTranslation = array(
         LogLevel::EMERGENCY => LoggerLevel::FATAL,
@@ -100,6 +100,9 @@ class Log4PhpPsr3Adapter
             case LogLevel::DEBUG:
                 $this->logger->debug($msg);
                 break;
+            
+            default:
+                throw new \Psr\Log\InvalidArgumentException();
         }
     }
 }
