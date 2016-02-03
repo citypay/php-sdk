@@ -14,7 +14,7 @@ trait InterpolationTrait
         foreach ($context as $key => $val) {
             $replace['{' . $key . '}'] = $val;
         }
-
+        
         // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }

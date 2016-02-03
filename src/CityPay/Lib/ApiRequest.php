@@ -7,6 +7,7 @@ use CityPay\Encoding\Json\JsonSerializable;
 use CityPay\Encoding\FormUrl\FormUrlSerializable;
 
 use \CityPay\Lib\Security\PciDss;
+use \CityPay\Lib\Security\PciDssLogger;
 use \CityPay\Lib\Security\PciDssLoggable;
 
 use Psr\Log\LoggerAwareInterface;
@@ -42,6 +43,9 @@ abstract class ApiRequest
             throw new \InvalidArgumentException();
         }
         
+        $this->logger = \CityPay\Lib\Logger::getLogger(__CLASS__);
+        $this->logger->log(\Psr\Log\LogLevel::ERROR, "this is a test");
+        
         self::initialiseNameValueComponent($apiConfig);
         self::set(
             "test",
@@ -73,9 +77,9 @@ abstract class ApiRequest
         //
         $loggableElementTypeMap = $this->getPciDssLoggableElementTypeMap();
         $aggregateElementTypeMap = array_merge($elementTypeMap, $loggableElementTypeMap);
-        
+       
         if (!is_null($this->logger) && $this->logger instanceof PciDssLogger) {
-            $this->logger->log($level, $message, $context, $elementTypeMap);
+            $this->logger->log($level, $message, $aggregateContext, $aggregateElementTypeMap);
         }
     }
     
@@ -144,7 +148,18 @@ abstract class ApiRequest
         //
         //  Log request
         //
-        self::log(\Psr\Log\LogLevel::DEBUG, "{loggable}");
+        self::log(\Psr\Log\LogLevel::DEBUG,
+            "ApiRequest::invokeRpcAndDeserializeResponse ["
+                ."endpoint=\"{endpoint}\", "
+                ."contentType=\"{contentType}\", "
+                ."responseContentType=\"{responseContentType}\""
+                ."]",
+            array(
+                'endpoint' => (($apiEndpoint != null) ? $apiEndpoint->getUrl() : 'null'),
+                'contentType' => $contentType,
+                'responseContentType' => $responseContentType
+            )
+        );
         
         //
         //
@@ -174,98 +189,4 @@ abstract class ApiRequest
     public function jsonSerialize() {
         return $this->mapNameValue;
     }
-    
-    /**
-     * 
-     * PciDssLoggable interface implementation
-     * 
-     */
-   
-    /**
-     * {@inheritdoc}
-     */
-    /*public function getPciDssLoggableElementMap() {
-        $elementMap = array();
-        $propertyMap = $this->mapNameValue;
-        foreach ($propertyMap as $key => $value) {
-            $elementMap[$key] = (is_null($value) ? 'null' : $value);
-        }
-     
-        $x = array(
-            'loggable' => $elementMap
-        );
-        
-        echo "getPciDssLoggableElementMap: ";
-        var_dump($x);
-        
-        return $x;
-    }*/
-    
-    /**
-     * 
-     * @return type
-     */
-    /*protected abstract function getPciDssLoggableSensitiveElementTypeMap();*/
-    
-    /**
-     * 
-     * @param type $value
-     * @return type
-     */
-    /*private function getObjectElementTypeMap($value) {
-        echo "XXXXXX";
-        var_dump($value);
-        $t = get_object_vars($value);
-        echo "NNNNNN";
-        var_dump($t);
-        $q =  self::getAssociativeArrayElementTypeMap($t);
-        echo "ZZZZZZ";
-        var_dump($q);
-        return $q;
-    }*/
-   
-    /**
-     * 
-     * @param array $array
-     * @return type
-     */
-    /*private function getAssociativeArrayElementTypeMap(array $array) {
-        echo "YYYYYY";
-        var_dump($array);
-        $elementTypeMap = array();
-        foreach ($array as $key => $value) {
-            if (!is_null($value)) {
-                echo "->>>>>>>> ".gettype($value)." <<<<<<<<<-";
-                
-                if (is_object($value)) {
-                    if ($value instanceof PciDssLoggable) {
-                        $elementTypeMap[$key] = $value->getPciDssLoggableElementTypeMap();
-                    } else {
-                        $elementTypeMap[$key] = self::getObjectElementTypeMap($value);
-                    }
-                } else if (is_array($value)) {
-                    $elementTypeMap[$key] = self::getAssociativeArrayElementTypeMap($value);
-                } else {
-                    $elementTypeMap[$key] = PciDss::INSENSITIVE;
-                }
-            }
-        }
-        
-        echo "ELEMENT_TYPE_MAP ->";
-        var_dump($elementTypeMap);
-        
-        return $elementTypeMap;
-    }*/
-    
-    /**
-     * 
-     */
-    /*public function getPciDssLoggableElementTypeMap() {
-        return array(
-            'loggable' => array_merge(
-                self::getAssociativeArrayElementTypeMap($this->mapNameValue),
-                $this->getPciDssLoggableSensitiveElementTypeMap()
-            )
-        );
-    }*/
 }
