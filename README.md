@@ -25,8 +25,10 @@ The API has been developed in accordance with the PHP Standards Recommendations
 and, in particular –
 
 1. [PSR-1](http://www.php-fig.org/psr/psr-1/), the basic coding standard;
-2. [PSR-2](http://www.php-fig.org/psr/psr-2/), the coding style guide; and
-3. [PSR-4](http://www.php-fig.org/psr/psr-4/), the class autoloading standard.
+2. [PSR-2](http://www.php-fig.org/psr/psr-2/), the coding style guide; 
+3. [PSR-3](http://www.php-fig.org/psr/psr-3/), the logger interface standard;
+   and
+4. [PSR-4](http://www.php-fig.org/psr/psr-4/), the class autoloading standard.
 
 The API has been developed using [Composer](https://getcomposer.org/ "Composer")
 to manage dependencies. To import the CityPay SDK for PHP into your project
@@ -500,3 +502,21 @@ determined by configuration of the Merchant profile by the Service Provider.
         //  Throw exception
         //
     }
+
+## PCI DSS Compliant Logging support
+
+At present, the API provides partial, experimental support for PCI DSS compliant
+logging using the logger interface standard provided by
+[PSR-3](http://www.php-fig.org/psr/psr-3).
+
+Unfortunately, PSR-3 does not propose a standard or guidelines for informing
+supporting APIs of a suitable PSR-3 compliant logging sink. In particular,
+PSR-3 does not make it clear whether APIs should use a singular logging sink,
+or whether a structured hierarchy of logging sink ought to be used thereby
+enabling fine-grained control over API logging behaviour.
+
+It is expected, in due course, that informing the API of a suitable PSR-3
+compliant logging sink factory will be performed through a statically bound
+call to `\CityPay\Lib\Logger::setLoggerDelegate()` such that the API is able
+to construct appropriate subordinate loggers through subsequent calls to
+`\CityPay\Lib\Logger::getLogger()`.

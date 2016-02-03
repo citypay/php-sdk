@@ -32,7 +32,7 @@ use CityPay\Lib\Security\PciDssLogger;
  * that host applications will implement for the purpose of supplying
  * appropriate, PSR-3 LoggerInterface adapted, logging targets.
  * 
- * To resolve (2), the SDK may public an interface and two implementing
+ * To resolve (2), the SDK may publish an interface and two implementing
  * classes: a LoggerClass class, and a LoggerObject class to support
  * an application logger hierarchy that uses class references, and object
  * references for the root logger object, respectively.
