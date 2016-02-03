@@ -628,8 +628,13 @@ class PayPostRequest
      */
     protected function getPciDssLoggableSensitiveElementTypeMap() {
         return array(
-            'merchantId' => PciDss::MERCHANTID,
-            'licenceKey' => PciDss::LICENCEKEY,
+            'merchantid' => PciDss::MERCHANTID,
+            'licencekey' => PciDss::LICENCEKEY,
+            'cardnumber' => PciDss::CARDNUMBER,
+            'csc' => PciDss::CSC,
+            'expmonth' => PciDss::INSENSITIVE,
+            'expyear' => PciDss::INSENSITIVE,
+            'cacid' => PciDss::CARDHOLDERACCOUNTID
         );
     }
 }
