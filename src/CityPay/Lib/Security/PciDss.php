@@ -52,6 +52,7 @@ class PciDss {
                 } else {
                     switch ($elementType) {
                         case static::INSENSITIVE:
+                            $output[$key] = $value;
                             break;
                         
                         case static::MERCHANTID:
@@ -78,7 +79,6 @@ class PciDss {
                             break;
                     }
                 }
-                
             } else {
                 $output[$key] = $value;
             }

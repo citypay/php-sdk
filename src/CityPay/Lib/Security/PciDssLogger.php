@@ -46,21 +46,49 @@ class PciDssLogger
     
     /**
      * 
+     */
+    private static function generateStringFromKeyValuePair(
+        $key,
+        $value
+    ) {
+        $scratch = $key
+            .'=';
+        if (is_array($value)) {
+            $scratch .= self::generateStringFromArray($value);
+        } else if (is_object($value)) {
+            $scratch .= self::generateStringFromObject($value);
+        } else if (is_string($value)) {
+            $scratch .= '"'
+                .$value
+                .= '"';
+        } else {
+            $scratch .= $value;
+        }
+        return $scratch;
+    }
+    
+    /**
+     * 
      * @param array $array
      */
     private static function generateStringFromArray(
         array $array
     ) {
+        if (is_null($array)) {
+            return "[null]";
+        }
+        
         $scratch = '[';
-        foreach ($array as $key => $value) {
-            $scratch .= $key
-                .'=';
-            if (is_array($value)) {
-                $scratch .= self::generateStringFromArray($value);
-            } else if (is_object($value)) {
-                $scratch .= self::generateStringFromObject($value);
-            } else {
-                $scratch .= $value;
+        $keys = array_keys($array);
+        $i_max = count($keys);
+        if ($i_max > 0x00) {
+            $i = 0x00;
+            $key = $keys[$i++];  $value = $array[$key];
+            $scratch .= self::generateStringFromKeyValuePair($key, $value);
+            while ($i < $i_max) {
+                $key = $keys[$i++]; $value = $array[$key];
+                $scratch .= ', '
+                    .self::generateStringFromKeyValuePair($key, $value);
             }
         }
         $scratch .= ']';
