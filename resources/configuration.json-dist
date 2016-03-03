@@ -1,0 +1,42 @@
+{
+    "clientId": "",
+    "accountName": "",
+    "licenceKey": "",
+    "merchantAccounts": [
+        {
+            "accountName": "CardHolderAccountMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "ContinuousAuthorityMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "ElectronicCommerceHighPassMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "ElectronicCommerceLowPassMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "MerchantSurchargingMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "MailOrderTelephoneOrderMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        },
+        {
+            "accountName": "PreAuthorisationMerchantAccount",
+            "mid": "",
+            "licenceKey": ""
+        }
+    ]
+}
