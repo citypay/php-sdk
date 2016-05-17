@@ -1,6 +1,7 @@
 /.idea
+/build
 /nbproject
 /nbproject/private/
 /resources/configuration.json
-composer.lock
 /vendor
+composer.lock

@@ -1,13 +1,14 @@
 {
     "name": "citypay/php-sdk",
-    "description": "CityPay PHP Library",
+    "type": "library",
+    "description": "CityPay SDK for PHP",
     "keywords": [
         "citypay",
         "payment processing",
         "api"
     ],
     "homepage": "http://citypay.com",
-    "license": "",
+    "license": "MIT",
     "authors": [
         {
             "name": "CityPay and contributors",
