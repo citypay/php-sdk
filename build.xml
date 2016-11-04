@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <project name="php-sdk" default="dist" basedir=".">
     
     <property name="package" value="${phing.project.name}" override="true" />
@@ -12,6 +13,8 @@
 
     <exec outputProperty="git.branch" 
         command="git rev-parse --abbrev-ref HEAD" />
+    
+    <autoloader />
     
     <!-- ============================================  -->
     <!-- Target: clean                               -->
@@ -43,10 +46,81 @@
     <!-- Target: phpcs                                 -->
     <!-- ============================================  -->    
     <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-	<echo msg="Running PHP_CodeSniffer" />
+        <echo msg="Running PHP_CodeSniffer" />
         <exec executable="phpcs" dir="${project.basedir}">
-            <arg line="--report=checkstyle --report-file=${project.basedir}/tests/checkstyle.xml --standard=${project.basedir}/tests/phpcs/OpenCart/ruleset.xml --extensions=php ${srcdir}/"/>
+            <arg line="--report=checkstyle --report-file=${project.basedir}/test/checkstyle.xml --standard=${project.basedir}/test/phpcs/OpenCart/ruleset.xml --extensions=php ${srcdir}/"/>
         </exec>
+    </target>
+    
+    <!-- ============================================  -->
+    <!-- Target: unit-test                             -->
+    <!-- ============================================  -->
+    <target name="unit-test">
+        <phpunit
+            bootstrap="${project.basedir}/vendor/autoload.php">
+            <formatter type="plain" usefile="false"/>
+            <batchtest name="integration-test-batch">
+                <fileset dir="${project.basedir}/test">
+                    <include name="**/*UnitTest*.php" />
+                    <exclude name="**/*IntegrationTest*.php" />
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+    
+    <!-- ============================================  -->
+    <!-- Target: integration-test                      -->
+    <!-- ============================================  -->
+    <target name="integration-test">
+        <phpunit
+            bootstrap="${project.basedir}/vendor/autoload.php">
+            <formatter type="plain" usefile="false"/>
+            <batchtest name="integration-test-batch">
+                <fileset dir="${project.basedir}/test">
+                    <include name="**/*IntegrationTest*.php" />
+                    <exclude name="**/*UnitTest*.php" />
+                </fileset>
+            </batchtest>
+        </phpunit>
+    </target>
+    
+    <!-- ============================================  -->
+    <!-- Target: test                                  -->
+    <!-- ============================================  -->
+    <target name="test" depends="build">
+        <property name="phpunit.executable"
+            value="${project.basedir}/vendor/bin/phpunit" />
+
+        <if>
+            <not><isset property="phpunit.executable" /></not>
+            <then>
+                <exec outputProperty="phpunit.executable"
+                    command="whereis phpunit" /> 
+            </then>
+        </if>
+        
+        <echo msg="phpunit => ${phpunit.executable}" />
+        
+        <echo msg="Invoking unit tests..." />
+        <phingcall target="unit-test">
+            <property name="pharlocation" value="${phpunit.executable}" />
+        </phingcall> 
+       
+        <available file="${project.basedir}/test/etc/configuration.json"
+            property="configuration.exists"
+            value="true" />
+        <if>
+            <isset property="configuration.exists" />
+            <then>
+                <echo msg="Invoking integration tests..." />
+                <phingcall target="integration-test">
+                    <property name="pharlocation" value="${phpunit.executable}" />
+                </phingcall>
+            </then>
+            <else>
+                <echo msg="Not invoking integration tests... local configuration not presently available." />
+            </else>
+        </if>
     </target>
 
     <!-- ============================================  -->
@@ -71,7 +145,7 @@
     <!-- ============================================  -->
     <!-- (DEFAULT)  Target: dist                       -->
     <!-- ============================================  -->
-    <target name="dist" depends="build">
+    <target name="dist" depends="build,test">
         <echo msg="Creating archive..." />
         <zip destfile="${builddir}/${package}.zip">
             <fileset dir="${builddir}">

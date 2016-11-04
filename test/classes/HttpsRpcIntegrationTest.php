@@ -1,5 +1,5 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\PayLink\PayLinkRequest;
 use CityPay\PayLink\Address;
@@ -9,10 +9,19 @@ use CityPay\PayLink\Configuration;
 /**
  * 
  */
-class HttpsRpcTest
+class HttpsRpcIntegrationTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
     
     /**
      *

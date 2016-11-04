@@ -1,5 +1,5 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\Lib\Logger;
 
@@ -14,10 +14,19 @@ use Psr\Log\LoggerInterface;
 /**
  * 
  */
-class CityPayLoggingTest
+class CityPayLoggingIntegrationTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
     
     /**
      * 

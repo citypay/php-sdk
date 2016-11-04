@@ -27,10 +27,10 @@
         "squizlabs/php_codesniffer": "~2.0"
     },
     "autoload": {
-        "psr-4": { "CityPay\\" : "src/CityPay" }
+        "psr-4": { "CityPay\\": "src/CityPay/" }
     },
     "autoload-dev": {
-        "psr-4": { "" : "tests/" }
+        "psr-4": { "CityPay\\": "test/classes/CityPay/" }
     },
     "extra": {
        

@@ -1,4 +1,6 @@
 <?php
+namespace CityPay\Lib;
+
 /**
  * 
  */
@@ -9,16 +11,13 @@ trait ClientConfiguration
      * @var type 
      */
     protected static $clientConfiguration;
-    
+        
     /**
      * 
      */
-    public static function setUpBeforeClass()
-    {
-        $x = dirname(dirname(__FILE__));
-        $y = $x.'/resources/configuration.json';
+    protected static function initTrait() {
         self::$clientConfiguration = new \CityPay\Lib\Configuration(
-            dirname(dirname(__FILE__)).'/resources/configuration.json'
+            dirname(dirname(dirname(dirname(__FILE__)))).'/etc/configuration.json'
         );
     }
     
@@ -125,4 +124,5 @@ trait ClientConfiguration
     protected static function getElectronicCommerceLowPassLicenceKey() {
         return self::getElectronicCommerceLowPassMerchantAccount()->getLicenceKey();
     }
+    
 }

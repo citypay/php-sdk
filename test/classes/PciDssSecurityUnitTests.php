@@ -1,15 +1,24 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\Lib\Security\PciDss;
 
 /**
  * 
  */
-class PciDssSecurityTest
+class PciDssSecurityUnitTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
     
     /**
      * 

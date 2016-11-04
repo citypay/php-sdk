@@ -1,15 +1,24 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\PayLink\PayLinkRequest;
 use CityPay\PayLink\Address;
 use CityPay\PayLink\Cardholder;
 use CityPay\PayLink\Configuration;
 
-class PayLinkRequestTest
+class PayLinkRequestIntegrationTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
     
     /**
      *
@@ -63,7 +72,9 @@ class PayLinkRequestTest
 
         $this->assertTrue(
             get_class($res) == 'CityPay\PayLink\PayLinkApiError',
-            'Assert response object is of type CityPay\PayLink\PayLinkApiError'
+            'Assert response object is of type"'
+                .get_class($res)
+                .', not CityPay\PayLink\PayLinkApiError as required'
         );
     }
 
