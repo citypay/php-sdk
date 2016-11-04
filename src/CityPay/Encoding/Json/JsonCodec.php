@@ -60,8 +60,6 @@ class JsonCodec
 
         return $y->jsonDeserialize($object);
     }
-    
-    
 
     /**
      * @param $string
@@ -72,7 +70,7 @@ class JsonCodec
     public static function initialiseFrom(
         $object,
         $class
-    ) {
+    ) {    
         switch (gettype($object)) {
             case "object":
                 $sourceObject = $object;

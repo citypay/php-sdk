@@ -1,5 +1,5 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\Lib\NamedValueNotFoundException;
 use CityPay\Lib\InvalidGatewayResponseException;
@@ -9,10 +9,19 @@ use CityPay\PayLink\PayLinkPostbackNotice;
 /**
  * 
  */
-class PayLinkPostbackNoticeTest
+class PayLinkPostbackNoticeUnitTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
     
     /**
      * 
@@ -81,7 +90,7 @@ class PayLinkPostbackNoticeTest
     {
         try {
             $postbackNotice = JsonCodec::initialiseFrom(
-                    PayLinkPostbackNoticeTest::postbackResponse_packet_structure_failure(),
+                    PayLinkPostbackNoticeUnitTest::postbackResponse_packet_structure_failure(),
                     PayLinkPostbackNotice::class
                 )
                 ->licenceKey("MTD25HDPUVVBBG23")
@@ -130,7 +139,7 @@ class PayLinkPostbackNoticeTest
     {
         try {
             $postbackNotice = JsonCodec::initialiseFrom(
-                    PayLinkPostbackNoticeTest::postbackResponse_packet_digest_failure(),
+                    PayLinkPostbackNoticeUnitTest::postbackResponse_packet_digest_failure(),
                     PayLinkPostbackNotice::class
                 )
                 ->licenceKey("MTD25HDPUVVBBG23")
@@ -180,7 +189,7 @@ class PayLinkPostbackNoticeTest
     {
         try {
             $postbackNotice = JsonCodec::initialiseFrom(
-                    PayLinkPostbackNoticeTest::postbackResponse_success(),
+                    PayLinkPostbackNoticeUnitTest::postbackResponse_success(),
                     PayLinkPostbackNotice::class
                 )
                 ->licenceKey("MTD25HDPUVVBBG23")

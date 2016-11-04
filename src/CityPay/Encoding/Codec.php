@@ -86,7 +86,7 @@ class Codec
             throw new InvalidArgumentException();
         }
         
-        if (!($object instanceof \stdClass)) {
+        if (!(is_array($object) || $object instanceof \stdClass)) {
             throw new DeserializationException();
         }
         

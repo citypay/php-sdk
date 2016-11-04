@@ -1,0 +1,28 @@
+[
+    {
+        "identifier": "encodedXmlPacket",
+        "type": "string",
+        "format": "multi-line",
+        "data": []
+    },
+    {
+        "identifier": "rawXmlPacket",
+        "type": "string",
+        "format": "multi-line",
+        "data": []
+    },
+    { 
+        "identifier": "payPostRequestTestThreeDSSalePAReqPacket",
+        "type": "string",
+        "format": "multi-line",
+        "data": []
+    },
+    {
+        "identifier": "payPostRequestTestThreeDSSalePAResPacket",
+        "type": "string",
+        "format": "multi-line",
+        "data": []
+    }
+]
+
+

@@ -1,0 +1,20 @@
+[
+    {
+        "identifier": "postbackResponse_success",
+        "type": "string",
+        "format": "multi-line",
+        "data": []
+    },
+    {
+        "identifier": "postbackResponse_packet_structure_failure",
+        "type": "object",
+        "data": {}
+    },
+    {
+        "identifier": "postbackResponse_packet_digest_failure",
+        "type": "object",
+        "data": {}
+    }
+    
+    
+]

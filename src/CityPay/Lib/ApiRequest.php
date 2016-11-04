@@ -44,8 +44,6 @@ abstract class ApiRequest
         }
         
         $this->logger = \CityPay\Lib\Logger::getLogger(__CLASS__);
-        $this->logger->log(\Psr\Log\LogLevel::ERROR, "this is a test");
-        
         self::initialiseNameValueComponent($apiConfig);
         self::set(
             "test",

@@ -1,14 +1,19 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\PayPost\PayPostRequest;
 use CityPay\PayPost\AcsPayPostRequest;
 use CityPay\PayPost\PayPostResponse;
 
-class PayPostRequestTest
+class PayPostRequestIntegrationTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use CityPay\Lib\ClientConfiguration,
+        CityPay\Lib\ThreeDSecureConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait insteadof \CityPay\Lib\ThreeDSecureConfiguration;
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+        \CityPay\Lib\ThreeDSecureConfiguration::initTrait as initThreeDSecureConfigurationTrait;
+    }
     
     /**
      * 
@@ -29,6 +34,14 @@ class PayPostRequestTest
      * 
      */
     const COMPLETE = 3;
+    
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+        self::initThreeDSecureConfigurationTrait();
+    }
     
     /**
      * 
@@ -199,10 +212,58 @@ class PayPostRequestTest
         //
         //
         //
-        self::execute(
+        $apiMessage = self::execute(
             self::SALE,
             "testThreeDSSale",
             $appr
+        );
+        
+        $this->assertTrue(
+            ($apiMessage instanceof CityPay\PayPost\PayPostAuthenticationRequiredResponse),
+            "ApiMessage [apr] is not of type \CityPay\PayPost\PayPostAuthenticationRequiredResponse ("
+                .get_class($apiMessage)
+                .")"
+        );
+        
+        $paRes = \CityPay\Mock\ThreeDSecureAccessControlServer::processPaymentAuthorisationRequest(
+            $this,
+            $apiMessage->getPaReq(),
+            'Y',
+            array(
+                \CityPay\Mock\ThreeDSecureAccessControlServer::REG_EX_EXPECTED_PAREQ_PACKET
+                    => self::getPayPostRequestTestThreeDSSalePAReqPacket(),
+                \CityPay\Mock\ThreeDSecureAccessControlServer::REG_EX_EXPECTED_PARES_PACKET
+                    => self::getPayPostRequestTestThreeDSSalePAResPacket()
+            )
+        );
+        
+        $appn = (new CityPay\PayPost\AcsPayPostNotify())
+          ->merchantId(self::getElectronicCommerceHighPassMID())
+          ->licenceKey(self::getElectronicCommerceHighPassLicenceKey())
+          ->md($apiMessage->getMd())
+          ->paRes($paRes);
+        
+        $apiMessage = $appn->notifyAcsResult();
+        
+        $this->assertTrue(
+            get_class($apiMessage) == 'CityPay\PayPost\PayPostResponse',
+            'Assert response object is not of type CityPay\PayPost\PayPostResponse'
+        );
+        
+        $this->assertTrue(
+            $apiMessage->getAuthcode() == 'A12345',
+            "Authcode is not A12345 ("
+                .$apiMessage->getAuthcode()
+        );
+     
+        $this->assertTrue(
+            $apiMessage->isAuthorised(),
+            "Transaction was not authorised"
+        );
+        
+        $this->assertTrue(
+            $apiMessage->getMode() == 'test',
+            "Transaction was not executed in test mode."
         );
     }
     
@@ -430,8 +491,6 @@ class PayPostRequestTest
             //
             //
             $this->assertTrue($completeApiMessage->getAuthResult() == 1);
-
-            var_dump($completeApiMessage);
         }
     }
 
@@ -463,4 +522,3 @@ class PayPostRequestTest
         );
     }
 }
-

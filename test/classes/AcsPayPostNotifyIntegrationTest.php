@@ -1,15 +1,17 @@
 <?php
-require(__DIR__.'/../vendor/autoload.php');
+//require(__DIR__.'/../../vendor/autoload.php');
 
 use CityPay\PayPost\AcsPayPostRequest;
 use CityPay\PayPost\PayPostAuthenticationRequiredResponse;
 use CityPay\PayPost\AcsPayPostNotify;
 use CityPay\PayPost\PayPostResponse;
 
-class AcsPayPostNotifyTest
+class AcsPayPostNotifyIntegrationTest
     extends PHPUnit_Framework_TestCase
 {
-    use ClientConfiguration;
+    use \CityPay\Lib\ClientConfiguration {
+        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+    }
     
     //
     //
@@ -36,6 +38,20 @@ class AcsPayPostNotifyTest
     //
     const COMPLETE = 4;
     
+    /**
+     * 
+     */
+    public static function setUpBeforeClass() {
+        self::initClientConfigurationTrait();
+    }
+    
+    /**
+     * 
+     * @param type $action
+     * @param type $caller
+     * @param type $payPostRequest
+     * @return type
+     */
     private function execute(
         $action,
         $caller,
