@@ -36,7 +36,7 @@ specify --
 
     {
         "require": {
-            "citypay/phpsdk": "1.0.*"
+            "citypay/php-sdk": "1.0.*"
         }
     }
 
