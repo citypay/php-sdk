@@ -32,13 +32,14 @@ and, in particular –
 
 The API has been developed using [Composer](https://getcomposer.org/ "Composer")
 to manage dependencies. To import the CityPay SDK for PHP into your project
-specify --
+specify the following in your `composer.json` file --
 
     {
         "require": {
             "citypay/php-sdk": "1.0.*"
         }
     }
+and then run `php composer.phar install`
 
 ## Hosted Form payment processing
 Payment processing using a Hosted Form is supported by the API using PayLink.
