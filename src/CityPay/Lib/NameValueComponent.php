@@ -51,27 +51,32 @@ trait NameValueComponent
     }
 
     /**
-     * @return mixed|void
+     * @return a Json string encoded via associated data from jsonSerialize
      */
-    protected function toJson() {
-        $jsonCodec = new JsonCodec();
-        return $jsonCodec->encode($this);
+    function toJson() {
+        return JsonCodec::encode($this->jsonSerialize());
     }
 
-    /**
-     *
-     */
-    protected function toJsonSerializationForm() {
-        return $this->mapNameValue;
-    }
 
     /**
-     * @return array
+     * @return array for external use
      */
     function jsonSerialize()
     {
-        // TODO: Implement jsonSerialize() method.
-        return $this->mapNameValue;
+        $data = [];
+        foreach ($this->mapNameValue as $key => $value) {
+            if (is_object($value) && method_exists($value,'jsonSerialize')) {
+                $value = $value->jsonSerialize();
+            }
+            $data[$key] = $value;
+        }
+        return  $data;
+    }
+
+
+    public function formUrlSerialize()
+    {
+        // TODO: Implement formUrlSerialize() method.
     }
 
     /**
