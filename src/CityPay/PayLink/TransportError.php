@@ -16,7 +16,7 @@ class TransportError
      * 
      * @param type $responseCode
      */
-    protected function __construct($responseCode) {
+    function __construct($responseCode) {
         parent::__construct();
         $this->responseCode = $responseCode;
     }
