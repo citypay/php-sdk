@@ -1,4 +1,5 @@
 <?php
+
 namespace CityPay\Lib;
 
 use CityPay\Lib\Rpc\HttpsRpc;
@@ -13,36 +14,37 @@ use \CityPay\Lib\Security\PciDssLoggable;
 use Psr\Log\LoggerAwareInterface;
 
 /**
- * 
+ *
  */
 abstract class ApiRequest
     implements Serializable,
-        FormUrlSerializable,
-        JsonSerializable,
-        LoggerAwareInterface,
-        PciDssLoggable
+    FormUrlSerializable,
+    JsonSerializable,
+    LoggerAwareInterface,
+    PciDssLoggable
 {
     //
     //  Support logger wiring
     //
     use \Psr\Log\LoggerAwareTrait;
-    
+
     //
     //
     //
     use \CityPay\Lib\PciDssLoggableNameValueComponent;
-    
+
     /**
-     * 
+     *
      * @param type $apiConfig
      */
     function __construct(
         $apiConfig = \CityPay\Config\DefaultConfig::class
-    ) {
+    )
+    {
         if (!is_subclass_of($apiConfig, \CityPay\Config\RuntimeConfig::class)) {
             throw new \InvalidArgumentException();
         }
-        
+
         $this->logger = \CityPay\Lib\Logger::getLogger(__CLASS__);
         self::initialiseNameValueComponent($apiConfig);
         self::set(
@@ -50,16 +52,17 @@ abstract class ApiRequest
             ($apiConfig::isApiTestingEnabled() ? "true" : "false")
         );
     }
-    
+
     /**
-     * 
+     *
      */
     protected function log(
         $level,
         $message,
         $context = array(),
         $elementTypeMap = array()
-    ) {
+    )
+    {
         //
         //  Merge the PCI DSS loggable data with the $context array passed
         //  as a parameter, to generate the aggregate context for the log
@@ -67,7 +70,7 @@ abstract class ApiRequest
         //
         $loggableElementMap = $this->getPciDssLoggableElementMap();
         $aggregateContext = array_merge($context, $loggableElementMap);
-        
+
         //
         //  Merge the PCI DSS loggable metadata with the $elementTypeMap
         //  array passed as a parameter, to generate the aggregate element
@@ -75,19 +78,19 @@ abstract class ApiRequest
         //
         $loggableElementTypeMap = $this->getPciDssLoggableElementTypeMap();
         $aggregateElementTypeMap = array_merge($elementTypeMap, $loggableElementTypeMap);
-       
+
         if (!is_null($this->logger) && $this->logger instanceof PciDssLogger) {
             $this->logger->log($level, $message, $aggregateContext, $aggregateElementTypeMap);
         }
     }
-    
+
     /**
-     * 
+     *
      */
     protected abstract function this();
-    
+
     /**
-     * 
+     *
      * @param type $apiEndpoint
      * @param type $contentType
      * @param type $payload
@@ -121,14 +124,13 @@ abstract class ApiRequest
             
         return $responseCode;
     }*/
-    
+
     /**
-     * @deprecated
-     * @param type $apiEndpoint
-     * @param type $contentType
-     * @param type $payload
-     * @param type $responseContentType
-     * @param type $responsePayload
+     * Invokes the remote procedure call to CityPay and deserializes the response data
+     * @param type $apiEndpoint the endpoint of the API to call
+     * @param type $contentType the content type utilised by the API
+     * @param type $responseContentType the content type expected in return
+     * @param type $responsePayload variable passed by reference of the payload deserialized by this function
      * @return type
      */
     protected function invokeRpcAndDeserializeResponse(
@@ -136,29 +138,30 @@ abstract class ApiRequest
         $contentType,
         $responseContentType,
         &$deserializedPayload
-    ) {
+    )
+    {
         //
         //  Create responsePayload variable to pass by reference to
         //  HttpsRpc::invoke.
         //
         $responsePayload = null;
-        
+
         //
         //  Log request
         //
         self::log(\Psr\Log\LogLevel::DEBUG,
             "ApiRequest::invokeRpcAndDeserializeResponse ["
-                ."endpoint=\"{endpoint}\", "
-                ."contentType=\"{contentType}\", "
-                ."responseContentType=\"{responseContentType}\""
-                ."]",
+            . "endpoint=\"{endpoint}\", "
+            . "contentType=\"{contentType}\", "
+            . "responseContentType=\"{responseContentType}\""
+            . "]",
             array(
                 'endpoint' => (($apiEndpoint != null) ? $apiEndpoint->getUrl() : 'null'),
                 'contentType' => $contentType,
                 'responseContentType' => $responseContentType
             )
         );
-        
+
         //
         //
         //
@@ -169,22 +172,11 @@ abstract class ApiRequest
             $responseContentType,
             $deserializedPayload
         );
-           
+
         return $responseCode;
     }
-    
-    /**
-     * @return array
-     */
-    public function formUrlSerialize() {
-        return $this->mapNameValue;
-    }
-    
-    /**
-     * 
-     * @return array
-     */
-    public function jsonSerialize() {
-        return $this->mapNameValue;
-    }
+
+
+
+
 }
