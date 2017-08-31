@@ -1,4 +1,5 @@
 <?php
+
 namespace CityPay\PayLink;
 
 use CityPay\Lib\Rpc\Http;
@@ -8,7 +9,7 @@ use CityPay\Lib\ApiRequest;
 use CityPay\Lib\Security\PciDss;
 
 /**
- * 
+ *
  */
 class PayLinkRequest
     extends ApiRequest
@@ -18,7 +19,8 @@ class PayLinkRequest
      */
     function __construct(
         $apiConfig = \CityPay\Config\DefaultConfig::class
-    ) {
+    )
+    {
         parent::__construct($apiConfig);
     }
 
@@ -28,7 +30,8 @@ class PayLinkRequest
      */
     public function address(
         $address
-    ) {
+    )
+    {
         parent::set("address", $address);
         return $this->this();
     }
@@ -39,19 +42,21 @@ class PayLinkRequest
      */
     public function amount(
         $amount
-    ) {
+    )
+    {
         parent::set("amount", $amount);
         return $this->this();
     }
 
     /**
-     * 
+     *
      * @param \CityPay\PayLink\Cardholder $cardholder
      * @return \CityPay\PayLink\PayLinkRequest
      */
     public function cardholder(
         $cardholder
-    ) {
+    )
+    {
         parent::set("cardholder", $cardholder);
         return $this->this();
     }
@@ -62,7 +67,8 @@ class PayLinkRequest
      */
     public function configuration(
         $configuration
-    ) {
+    )
+    {
         parent::set("configuration", $configuration);
         return $this->this();
     }
@@ -73,7 +79,8 @@ class PayLinkRequest
      */
     public function currency(
         $currencyCode
-    ) {
+    )
+    {
         parent::set("currency", $currencyCode);
         return $this->this();
     }
@@ -84,7 +91,8 @@ class PayLinkRequest
      */
     public function identifier(
         $identifier
-    ) {
+    )
+    {
         parent::set("identifier", $identifier);
         return $this->this();
     }
@@ -95,7 +103,8 @@ class PayLinkRequest
      */
     public function merchantId(
         $merchantId
-    ) {
+    )
+    {
         parent::set("merchantId", $merchantId);
         return $this->this();
     }
@@ -106,7 +115,8 @@ class PayLinkRequest
      */
     public function licenceKey(
         $licenceKey
-    ) {
+    )
+    {
         parent::set("licenceKey", $licenceKey);
         return $this->this();
     }
@@ -117,24 +127,29 @@ class PayLinkRequest
      */
     public function test(
         $test
-    ) {
+    )
+    {
         parent::set("test", $test);
         return $this->this();
     }
-    
+
     /**
-     * 
+     *
      * @return \CityPay\PayLink\PayLinkRequest
      */
-    protected function this() { return $this; }
+    protected function this()
+    {
+        return $this;
+    }
 
-        /**
+    /**
      * @param $transInfo
      * @return $this
      */
     public function transInfo(
         $transInfo
-    ) {
+    )
+    {
         parent::set("trans_info", $transInfo);
         return $this->this();
     }
@@ -145,15 +160,13 @@ class PayLinkRequest
      */
     public function transType(
         $transType
-    ) {
+    )
+    {
         parent::set("trans_type", $transType);
         return $this->this();
     }
 
-    /**
-     *
-     */
-    public function saleTransaction()
+    public function createToken()
     {
         $responsePayload = null;
 
@@ -163,11 +176,11 @@ class PayLinkRequest
             HttpsRpc::CONTENT_TYPE_JSON,
             $responsePayload
         );
-        
+
         if ($responseCode == Http::HTTP_OK && $responsePayload != null) {
             $result = $responsePayload->result;
             $id = $responsePayload->id;
-            
+
             if ($result == 0x01) {
                 $url = $responsePayload->url;
                 return new PayLinkToken($id, $url);
@@ -178,12 +191,21 @@ class PayLinkRequest
             return new TransportError($responseCode, $responsePayload);
         }
     }
-    
+
     /**
-     * 
-     * 
+     * @deprecated see createToken
      */
-    protected function getPciDssLoggableSensitiveElementTypeMap() {
+    public function saleTransaction()
+    {
+        return createToken();
+    }
+
+    /**
+     *
+     *
+     */
+    protected function getPciDssLoggableSensitiveElementTypeMap()
+    {
         return array(
             'merchantId' => PciDss::MERCHANTID,
             'licenceKey' => PciDss::LICENCEKEY,
