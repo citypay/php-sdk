@@ -64,18 +64,14 @@ class HttpsRpc
      * @return string
      *      a string containing the JSON representation of the object.
      */
-    private static function jsonEncode(
-        $object
-    ) {
+    private static function jsonEncode($object) {
         return JsonCodec::encode($object);
     }
 
     /**
      * @param $payload
      */
-    private static function xmlDecode(
-        $payload
-    ) {
+    private static function xmlDecode($payload) {
         return XmlCodec::decode($payload);
     }
 
@@ -119,6 +115,7 @@ class HttpsRpc
     }
 
     /**
+     * Invokes the http rpc process
      * @param $url
      * @param $contentType
      * @param $payload
@@ -186,6 +183,8 @@ class HttpsRpc
                 'Content-Length: '.strlen($encodedPayload)
             ),
             CURLOPT_VERBOSE => true,
+            CURLOPT_SSL_VERIFYHOST => 1,
+            CURLOPT_SSL_VERIFYPEER => 1,
             CURLOPT_STDERR => $curl_stderr
         );
 
