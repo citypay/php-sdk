@@ -69,7 +69,7 @@ class PayLinkRequest
         $configuration
     )
     {
-        parent::set("configuration", $configuration);
+        parent::set("config", $configuration);
         return $this->this();
     }
 
