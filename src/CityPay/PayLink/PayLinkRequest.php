@@ -197,7 +197,7 @@ class PayLinkRequest
      */
     public function saleTransaction()
     {
-        return createToken();
+        return $this->createToken();
     }
 
     /**
