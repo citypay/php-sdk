@@ -1,6 +1,6 @@
 {
     "name": "citypay/php-sdk",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "library",
     "description": "CityPay SDK for PHP",
     "keywords": [
