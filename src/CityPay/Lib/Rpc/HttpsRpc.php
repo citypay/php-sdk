@@ -183,8 +183,8 @@ class HttpsRpc
                 'Content-Length: '.strlen($encodedPayload)
             ),
             CURLOPT_VERBOSE => true,
-            CURLOPT_SSL_VERIFYHOST => 1,
-            CURLOPT_SSL_VERIFYPEER => 1,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => 2,
             CURLOPT_STDERR => $curl_stderr
         );
 
