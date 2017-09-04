@@ -724,16 +724,12 @@ class PayLinkPostbackNotice
      */
     public function validate() {
         $digests = $this->calculateDigests();
-        if ($this->digest == $digests["md5"]
-            && $this->sha1 == $digests["sha1"]
-            && $this->sha256 == $digests["sha256"]) {
+        if ($this->sha256 == $digests["sha256"]) {
             return $this;
         } else {
             throw new InvalidGatewayResponseException(
                 "PayLinkPostbackNotice::validate: hash digest conflict\n"
                     ."    field  | packet digest cf. locally calculated digest\n"
-                    ."    digest | ".$this->digest." cf.  ".$digests["md5"]."\n"
-                    ."    sha1   | ".$this->sha1." cf. ".$digests["sha1"]."\n"
                     ."    sha256 | ".$this->sha256." cf. ".$digests["sha256"]."\n"
             );
         }
