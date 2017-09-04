@@ -43,10 +43,18 @@ class PayLinkApiError
     }
  
     /**
-     * 
-     * @return object
+     * @return string field contains an error code indicating why the Paylink Token Request could not be completed successfully.
      */
     public function getResponseCode() {
-        return $this->responsePayload;
+        return $this->responsePayload->errors[0]->code;
     }
+
+
+    /**
+     * @return string field contains an error message indicating why the Token could not be generated.
+     */
+    public function getResponseMsg() {
+        return $this->responsePayload->errors[0]->msg;
+    }
+
 }
