@@ -1,10 +1,11 @@
 <?php
-require(__DIR__.'/../../vendor/autoload.php');
+require(__DIR__ . '/../../vendor/autoload.php');
 
 use CityPay\PayLink\PayLinkRequest;
 use CityPay\PayLink\Address;
 use CityPay\PayLink\Cardholder;
 use CityPay\PayLink\Configuration;
+use CityPay\PayLink\CustomParam;
 
 class PayLinkRequestIntegrationTest
     extends PHPUnit_Framework_TestCase
@@ -12,14 +13,15 @@ class PayLinkRequestIntegrationTest
     use \CityPay\Lib\ClientConfiguration {
         \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
     }
-    
+
     /**
-     * 
+     *
      */
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         self::initClientConfigurationTrait();
     }
-    
+
     /**
      *
      */
@@ -68,13 +70,13 @@ class PayLinkRequestIntegrationTest
             ->cardholder($cardholder)
             ->configuration($configuration);
 
-        $res = $pr->saleTransaction();
+        $res = $pr->createToken();
 
         $this->assertTrue(
             get_class($res) == 'CityPay\PayLink\PayLinkApiError',
             'Assert response object is of type"'
-                .get_class($res)
-                .', not CityPay\PayLink\PayLinkApiError as required'
+            . get_class($res)
+            . ', not CityPay\PayLink\PayLinkApiError as required'
         );
     }
 
@@ -99,6 +101,21 @@ class PayLinkRequestIntegrationTest
             ->redirect("http://general/redirect")
             ->redirectSuccess("http://success/redirect")
             ->redirectFailure("http://failure/redirect")
+            ->customParams(
+                array(
+                    (new CustomParam())
+                        ->name("custom1")
+                        ->value("ExampleHidden")
+                        ->fieldType("hidden"),
+                    (new CustomParam())
+                        ->name("custom2")
+                        ->value("ExampleHidden")
+                        ->fieldType("text")
+                        ->isRequired()
+                        ->label("FooBar")
+                        ->placeholder("Foo")
+                )
+            )
             ->options(
                 array(Configuration::BYPASS_CUSTOMER_EMAIL,
                     Configuration::BYPASS_MERCHANT_EMAIL,
@@ -115,13 +132,17 @@ class PayLinkRequestIntegrationTest
             ->cardholder($cardholder)
             ->configuration($configuration);
 
-        $res = $pr->saleTransaction();
+        $res = $pr->createToken();
 
-        $this->assertTrue(
-            get_class($res) == 'CityPay\PayLink\PayLinkToken',
-            "Response object is of type "
-                .get_class($res)
-                .", not CityPay\PayLink\PayLinkToken as required."
-        );
+        if ($res instanceof \CityPay\PayLink\PayLinkToken) {
+            assertTrue(true);
+        } else if ($res instanceof \CityPay\PayLink\PayLinkApiError) {
+            self::fail("Api Error: " . $res->getResponseCode() . ", " . $res->getResponseMsg());
+        } else if ($res instanceof \CityPay\PayLink\TransportError) {
+            self::fail("Transport Error: " . $res->getResponseCode());
+        } else {
+            self::fail("Unexpected response type " . get_class($res));
+        }
+
     }
 }

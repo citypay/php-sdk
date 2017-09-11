@@ -3,18 +3,17 @@ namespace CityPay\PayLink;
 
 use CityPay\Lib\ApiMessage;
 
-class TransportError
-    extends ApiMessage
-{
-    /**
-     *
-     * @var type 
-     */
+class TransportError extends ApiMessage {
+
     private $responseCode;
+
+    public function getResponseCode() {
+        return $this->responseCode;
+    }
 
     /**
      * 
-     * @param type $responseCode
+     * @param string $responseCode
      */
     function __construct($responseCode) {
         parent::__construct();

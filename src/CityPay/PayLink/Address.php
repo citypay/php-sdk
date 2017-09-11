@@ -2,11 +2,10 @@
 namespace CityPay\PayLink;
 
 /**
- * 
+ * Cardholder fields are used to identify the underlying cardholder processing the transaction.
+ * These values are optional and the user can complete these values on the online form.
  */
-class Address
-    implements \CityPay\Lib\Security\PciDssLoggable
-{
+class Address implements \CityPay\Lib\Security\PciDssLoggable {
     use \CityPay\Lib\PciDssLoggableNameValueComponent;
     
     /**
@@ -18,7 +17,7 @@ class Address
      * Initialise line 1 of the address.
      * 
      * @param string $address1
-     * @return \CityPay\PayLink\Address
+     * @return Address
      */
     public function address1(
         $address1
@@ -31,7 +30,7 @@ class Address
      * Initialise line 2 of the address.
      * 
      * @param string $address2
-     * @return \CityPay\PayLink\Address
+     * @return Address
      */
     public function address2(
         $address2
@@ -44,7 +43,7 @@ class Address
      * Initialise the area of the address.
      * 
      * @param string $area
-     * @return \CityPay\PayLink\Address
+     * @return Address
      */
     public function area(
         $area
@@ -57,7 +56,7 @@ class Address
      * Initialise the country of the address.
      * 
      * @param string $country
-     * @return \CityPay\PayLink\Address
+     * @return Address
      */
     public function country(
         $country
@@ -70,7 +69,7 @@ class Address
      * Initialise the postcode of the address.
      * 
      * @param string $postcode
-     * @return \CityPay\PayLink\Address
+     * @return Address
      */
     public function postcode(
         $postcode

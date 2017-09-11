@@ -127,9 +127,9 @@ abstract class ApiRequest
 
     /**
      * Invokes the remote procedure call to CityPay and deserializes the response data
-     * @param type $apiEndpoint the endpoint of the API to call
-     * @param type $contentType the content type utilised by the API
-     * @param type $responseContentType the content type expected in return
+     * @param string $apiEndpoint the endpoint of the API to call
+     * @param int $contentType the content type utilised by the API
+     * @param int $responseContentType the content type expected in return
      * @param type $responsePayload variable passed by reference of the payload deserialized by this function
      * @return type
      */

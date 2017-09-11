@@ -172,6 +172,8 @@ class HttpsRpc
                 //
         }
 
+        echo $encodedPayload;
+
         $curl_stderr = fopen('php://temp', 'w+');
         $curl_opts = array(
             CURLOPT_POST => true,

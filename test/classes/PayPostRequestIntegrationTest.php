@@ -10,9 +10,9 @@ class PayPostRequestIntegrationTest
 {
     use CityPay\Lib\ClientConfiguration,
         CityPay\Lib\ThreeDSecureConfiguration {
-        \CityPay\Lib\ClientConfiguration::initTrait insteadof \CityPay\Lib\ThreeDSecureConfiguration;
-        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
-        \CityPay\Lib\ThreeDSecureConfiguration::initTrait as initThreeDSecureConfigurationTrait;
+//        \CityPay\Lib\ClientConfiguration::initTrait insteadof \CityPay\Lib\ThreeDSecureConfiguration;
+//        \CityPay\Lib\ClientConfiguration::initTrait as initClientConfigurationTrait;
+//        \CityPay\Lib\ThreeDSecureConfiguration::initTrait as initThreeDSecureConfigurationTrait;
     }
     
     /**
@@ -38,16 +38,16 @@ class PayPostRequestIntegrationTest
     /**
      * 
      */
-    public static function setUpBeforeClass() {
-        self::initClientConfigurationTrait();
-        self::initThreeDSecureConfigurationTrait();
-    }
+//    public static function setUpBeforeClass() {
+//        self::initClientConfigurationTrait();
+//        self::initThreeDSecureConfigurationTrait();
+//    }
     
     /**
      * 
      * @param type $action
      * @param type $caller
-     * @param type $payPostRequest
+     * @param \CityPay\PayPost\PayPostRequest $payPostRequest
      * @return type
      */
     private function execute(

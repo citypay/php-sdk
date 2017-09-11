@@ -6,9 +6,8 @@ namespace CityPay\PayLink;
  * associated with a cardholder in the context of a PayLink transaction
  * request.
  */
-class Cardholder
-    implements \CityPay\Lib\Security\PciDssLoggable
-{
+class Cardholder implements \CityPay\Lib\Security\PciDssLoggable {
+
     use \CityPay\Lib\PciDssLoggableNameValueComponent;
     
     /**
@@ -18,18 +17,18 @@ class Cardholder
 
     /**
      * @param string $acceptHeaders
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function acceptHeaders(
         $acceptHeaders
     ) {
-        selt::set("acceptHeaders", $acceptHeaders);
+        self::set("acceptHeaders", $acceptHeaders);
         return $this;
     }
 
     /**
      * @param \CityPay\PayLink\Address $address
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function address(
         $address
@@ -40,7 +39,7 @@ class Cardholder
 
     /**
      * @param string $email
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function email(
         $email
@@ -51,7 +50,7 @@ class Cardholder
 
     /**
      * @param string $firstName
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function firstName(
         $firstName
@@ -62,7 +61,7 @@ class Cardholder
 
     /**
      * @param string $lastName
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function lastName(
         $lastName
@@ -73,7 +72,7 @@ class Cardholder
 
     /**
      * @param string $title
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function title(
         $title
@@ -84,7 +83,7 @@ class Cardholder
 
     /**
      * @param string $remoteAddress
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function remoteAddress(
         $remoteAddress
@@ -95,7 +94,7 @@ class Cardholder
 
     /**
      * @param string $userAgent
-     * @return \CityPay\PayLink\Cardholder
+     * @return Cardholder
      */
     public function userAgent(
         $userAgent

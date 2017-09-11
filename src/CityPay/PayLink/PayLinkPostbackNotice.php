@@ -1,4 +1,5 @@
 <?php
+
 namespace CityPay\PayLink;
 
 use CityPay\Lib\ApiMessage;
@@ -9,16 +10,21 @@ use CityPay\Encoding\Json\JsonDeserializable;
 
 
 /**
- * 
+ *
  */
 class PayLinkPostbackNotice
     extends ApiMessage
     implements Deserializable,
-        JsonDeserializable
+    JsonDeserializable
 {
     use \CityPay\Lib\NameValueComponent;
     use \CityPay\Lib\DataAccess;
-    
+
+    /**
+     * @var array holding variable for returned data
+     */
+    private $array;
+
     /**
      * The amount field specifies the total amount of the Transaction in
      * Lowest Denomination Form, inclusive of any surcharge applied.
@@ -62,6 +68,8 @@ class PayLinkPostbackNotice
      *
      */
     private $currency;
+
+    private $datetime;
 
     /**
      * The errorcode field contains an error code for the Transaction
@@ -692,25 +700,27 @@ class PayLinkPostbackNotice
      *
      */
     private $sha256;
-    
+
     /**
-     * 
+     *
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
     /**
      * @return array
      */
-    private function calculateDigests() {
+    private function calculateDigests()
+    {
         $digestInput = $this->authcode
-            .$this->amount
-            .$this->errorCode
-            .$this->merchantId
-            .$this->transNo
-            .$this->identifier
-            .$this->licenceKey;
+            . $this->amount
+            . $this->errorCode
+            . $this->merchantId
+            . $this->transNo
+            . $this->identifier
+            . $this->licenceKey;
 
         return array(
             "md5" => base64_encode(md5($digestInput, true)),
@@ -722,27 +732,35 @@ class PayLinkPostbackNotice
     /**
      * @return mixed
      */
-    public function validate() {
+    public function validate()
+    {
         $digests = $this->calculateDigests();
         if ($this->sha256 == $digests["sha256"]) {
             return $this;
         } else {
             throw new InvalidGatewayResponseException(
                 "PayLinkPostbackNotice::validate: hash digest conflict\n"
-                    ."    field  | packet digest cf. locally calculated digest\n"
-                    ."    sha256 | ".$this->sha256." cf. ".$digests["sha256"]."\n"
+                . "    field  | packet digest cf. locally calculated digest\n"
+                . "    sha256 | " . $this->sha256 . " cf. " . $digests["sha256"] . "\n"
             );
         }
     }
-    
-    public function deserialize($object) {
+
+    public function deserialize($object)
+    {
         throw new UnsupportedOperationException();
     }
 
-        /**
+    public function customParam($name)
+    {
+        self::getStringOrException($this->array, $name);
+    }
+
+    /**
      * @param $array
      */
-    public function jsonDeserialize($object) {
+    public function jsonDeserialize($object)
+    {
         if (is_object($object)) {
             $array = get_object_vars($object);
         } else if (is_array($object)) {
@@ -755,6 +773,10 @@ class PayLinkPostbackNotice
         $this->authcode = self::getStringOrException($array, "authcode");
         $this->authorised = self::getBooleanOrException($array, "authorised");
         $this->currency = self::getStringOrException($array, "currency");
+        $this->datetime = \DateTime::createFromFormat('Y-m-d\TH:i:s+',
+            self::getStringOrException($array, "datetime"),
+            new \DateTimeZone("etc/utc")
+        );
         $this->errorCode = self::getStringOrException($array, "errorcode");
         $this->errorId = self::getStringOrException($array, "errorid");
         $this->errorMessage = self::getStringOrException($array, "errormessage");
@@ -764,7 +786,7 @@ class PayLinkPostbackNotice
         $this->result = self::getIntOrException($array, "result");
         $this->status = self::getStringOrException($array, "status");
         $this->transNo = self::getIntOrException($array, "transno");
-        
+
         //
         //  Optional surcharge-related values
         //
@@ -821,159 +843,198 @@ class PayLinkPostbackNotice
         return $this;
     }
 
-    public function getAmount() {
+    public function getAmount()
+    {
         return $this->amount;
     }
 
-    public function getInitialAmount() {
+    public function getInitialAmount()
+    {
         return $this->initialAmount;
     }
 
-    public function getAuthcode() {
+    public function getAuthcode()
+    {
         return $this->authcode;
     }
 
-    public function isAuthorised() {
+    public function isAuthorised()
+    {
         return $this->authorised;
     }
 
-    public function getCurrency() {
+    public function getCurrency()
+    {
         return $this->currency;
     }
 
-    public function getErrorCode() {
+    public function getErrorCode()
+    {
         return $this->errorCode;
     }
 
-    public function getErrorId() {
+    public function getErrorId()
+    {
         return $this->errorId;
     }
 
-    public function getErrorMessage() {
+    public function getErrorMessage()
+    {
         return $this->errorMessage;
     }
 
-    public function getIdentifier() {
+    public function getIdentifier()
+    {
         return $this->identifier;
     }
 
-    public function getMerchantId() {
+    public function getMerchantId()
+    {
         return $this->merchantId;
     }
 
-    public function getMode() {
+    public function getMode()
+    {
         return $this->mode;
     }
 
-    public function getResult() {
+    public function getResult()
+    {
         return $this->result;
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
-    public function getSurcharge() {
+    public function getSurcharge()
+    {
         return $this->surcharge;
     }
 
-    public function getSurchargeRate() {
+    public function getSurchargeRate()
+    {
         return $this->surchargeRate;
     }
 
-    public function getTransNo() {
+    public function getTransNo()
+    {
         return $this->transNo;
     }
 
-    public function getCardSchemeId() {
+    public function getCardSchemeId()
+    {
         return $this->cardSchemeId;
     }
 
-    public function getCardScheme() {
+    public function getCardScheme()
+    {
         return $this->cardScheme;
     }
 
-    public function getExpMonth() {
+    public function getExpMonth()
+    {
         return $this->expMonth;
     }
 
-    public function getExpYear() {
+    public function getExpYear()
+    {
         return $this->expYear;
     }
 
-    public function getMaskedPan() {
+    public function getMaskedPan()
+    {
         return $this->maskedPan;
     }
 
-    public function getAddress() {
+    public function getAddress()
+    {
         return $this->address;
     }
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getFirstName() {
+    public function getFirstName()
+    {
         return $this->firstName;
     }
 
-    public function getLastName() {
+    public function getLastName()
+    {
         return $this->lastName;
     }
 
-    public function getPostCode() {
+    public function getPostCode()
+    {
         return $this->postCode;
     }
 
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
-    public function getAvsResponse() {
+    public function getAvsResponse()
+    {
         return $this->avsResponse;
     }
 
-    public function getCscResponse() {
+    public function getCscResponse()
+    {
         return $this->cscResponse;
     }
 
-    public function getCavv() {
+    public function getCavv()
+    {
         return $this->cavv;
     }
 
-    public function getEci() {
+    public function getEci()
+    {
         return $this->eci;
     }
 
-    public function getAuthenticationResult() {
+    public function getAuthenticationResult()
+    {
         return $this->authenticationResult;
     }
 
-    public function getCac() {
+    public function getCac()
+    {
         return $this->cac;
     }
 
-    public function getCacId() {
+    public function getCacId()
+    {
         return $this->cacId;
     }
 
-    public function getDigest() {
+    public function getDigest()
+    {
         return $this->digest;
     }
 
-    public function getSha1() {
+    public function getSha1()
+    {
         return $this->sha1;
     }
 
-    public function getSha256() {
+    public function getSha256()
+    {
         return $this->sha256;
     }
 
-    public function licenceKey($licenseKey) {
+    public function licenceKey($licenseKey)
+    {
         $this->licenceKey = $licenseKey;
         return $this;
     }

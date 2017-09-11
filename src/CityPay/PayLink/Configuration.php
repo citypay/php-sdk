@@ -37,7 +37,7 @@ class Configuration
 
     /**
      * @param string $acsMode
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function acsMode(
         $acsMode
@@ -47,19 +47,17 @@ class Configuration
     }
 
     /**
-     * @param string $customParams
-     * @return \CityPay\PayLink\Configuration
+     * @param array $customParams an array of custom parameters to add to the config
+     * @return Configuration
      */
-    public function customParams(
-        $customParams
-    ) {
+    public function customParams($customParams) {
         self::set("customParams", $customParams);
         return $this;
     }
 
     /**
      * @param string $expireIn
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function expireIn(
         $expireIn
@@ -70,7 +68,7 @@ class Configuration
 
     /**
      * @param string $merchantBranding
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function merchantBranding(
         $merchantBranding
@@ -81,7 +79,7 @@ class Configuration
 
     /**
      * @param string $lockedParams
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function lockedParams(
         $lockedParams
@@ -91,8 +89,8 @@ class Configuration
     }
 
     /**
-     * @param string $options
-     * @return \CityPay\PayLink\Configuration
+     * @param array $options
+     * @return Configuration
      */
     public function options(
         $options
@@ -103,7 +101,7 @@ class Configuration
 
     /**
      * @param string $postback
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function postback(
         $postback
@@ -114,7 +112,7 @@ class Configuration
 
     /**
      * @param string $postbackPolicy
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function postbackPolicy(
         $postbackPolicy
@@ -125,7 +123,7 @@ class Configuration
 
     /**
      * @param $redirect
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function redirect(
         $redirect
@@ -136,7 +134,7 @@ class Configuration
 
     /**
      * @param string $redirectSuccess
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function redirectSuccess(
         $redirectSuccess
@@ -147,7 +145,7 @@ class Configuration
 
     /**
      * @param string $redirectFailure
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function redirectFailure(
         $redirectFailure
@@ -158,7 +156,7 @@ class Configuration
 
     /**
      * @param string $returnParams
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function returnParams(
         $returnParams
@@ -169,7 +167,7 @@ class Configuration
 
     /**
      * @param string $renderer
-     * @return \CityPay\PayLink\Configuration
+     * @return Configuration
      */
     public function renderer(
         $renderer
