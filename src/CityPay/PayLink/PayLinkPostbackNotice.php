@@ -751,9 +751,9 @@ class PayLinkPostbackNotice
         throw new UnsupportedOperationException();
     }
 
-    public function customParam($name)
+    public function getCustomParam($name)
     {
-        self::getStringOrException($this->array, $name);
+        return self::getStringOrException($this->array, $name);
     }
 
     /**
@@ -762,13 +762,14 @@ class PayLinkPostbackNotice
     public function jsonDeserialize($object)
     {
         if (is_object($object)) {
-            $array = get_object_vars($object);
+            $this->array = get_object_vars($object);
         } else if (is_array($object)) {
-            $array = $object;
+            $this->array = $object;
         } else {
             throw new \CityPay\Encoding\ClassNoDeserializable();
         }
 
+        $array = $this->array;
         $this->amount = self::getIntOrException($array, "amount");
         $this->authcode = self::getStringOrException($array, "authcode");
         $this->authorised = self::getBooleanOrException($array, "authorised");

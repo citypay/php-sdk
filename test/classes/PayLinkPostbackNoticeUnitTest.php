@@ -68,7 +68,9 @@ class PayLinkPostbackNoticeUnitTest
     "authorised": "true",
     "cac_id": "",
     "transno": 14152,
-    "merchantid": 123456
+    "merchantid": 123456,    
+    "customParam1": "foobar1",
+    "customParam2": "foobar2"
 }
 EOD;
 
@@ -257,6 +259,8 @@ EOD;
         $this->assertEquals("C5s33819SkMqk0F2ZCDlOQ==", $postbackNotice->getDigest());
         $this->assertEquals("L66ss5eQuBbDuUBPS7j5TQP7HDo=", $postbackNotice->getSha1());
         $this->assertEquals("CP+2/luf2HfMmYRjqABP3j/xRoJ0fRjQisuSYIhB31k=", $postbackNotice->getSha256());
+        $this->assertEquals("foobar1", $postbackNotice->getCustomParam("customParam1"));
+        $this->assertEquals("foobar2", $postbackNotice->getCustomParam("customParam2"));
     }
 
 

@@ -51,14 +51,13 @@ trait DataAccess
      */
     protected function getValueOrException($object, $key, $exceptionClass = NamedValueNotFoundException::class) {
         assert(is_subclass_of($exceptionClass, 'Exception', true));
+
         switch (gettype($object)) {
             case "object":
                 if (isset($object->$key)) {
                     return $object->$key;
                 } else {
-                    throw new $exceptionClass(
-                        $key . MAPLET_NOT_FOUND_IN_OBJECT
-                    );
+                    throw new $exceptionClass($key . MAPLET_NOT_FOUND_IN_OBJECT);
                 }
                 break;
             
@@ -66,9 +65,7 @@ trait DataAccess
                 if (array_key_exists($key, $object)) {
                     return $object[$key];
                 } else {
-                    throw new $exceptionClass(
-                        $key . MAPLET_NOT_FOUND_IN_ARRAY
-                    );
+                    throw new $exceptionClass($key . MAPLET_NOT_FOUND_IN_ARRAY);
                 }
                 break;
                 
