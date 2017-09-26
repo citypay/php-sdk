@@ -90,7 +90,7 @@ trait NameValueComponent
 
     public function formUrlSerialize()
     {
-        // TODO: Implement formUrlSerialize() method.
+        return $this->mapNameValue;
     }
 
     /**
