@@ -148,9 +148,7 @@ class HttpsRpc
                 break;
 
             default:
-                //
-                //  TODO: Throw an exception.
-                //
+                throw new Exception("Unsupported content type");
         }
 
         switch ($responseContentType) {
@@ -167,12 +165,8 @@ class HttpsRpc
                 break;
 
             default:
-                //
-                //  TODO: Throw an exception.
-                //
+                throw new Exception("Unsupported response type");
         }
-
-        echo $encodedPayload;
 
         $curl_stderr = fopen('php://temp', 'w+');
         $curl_opts = array(
@@ -245,9 +239,7 @@ class HttpsRpc
                 break;
 
             default:
-                //
-                //  TODO: Throw an exception.
-                //
+                throw new Exception("Unsupported response content type");
         }
 
         return $httpsResponseCode;
