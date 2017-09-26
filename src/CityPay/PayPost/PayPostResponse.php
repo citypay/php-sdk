@@ -642,7 +642,7 @@ class PayPostResponse
         if ($this->digest == base64_encode(md5($digestInput, true))) {
             return $this->this();
         } else {
-            throw new InvalidGatewayResponseException();
+            throw new InvalidGatewayResponseException("Digest failure");
         }
     }
 }
