@@ -24,10 +24,8 @@ class PayLinkPostbackNoticeUnitTest
         self::initClientConfigurationTrait();
     }
 
-    /**
-     *
-     * @return string
-     */
+
+
     private static function postbackResponse_success()
     {
         $str = <<<EOD
@@ -262,7 +260,6 @@ EOD;
         $this->assertEquals("foobar1", $postbackNotice->getCustomParam("customParam1"));
         $this->assertEquals("foobar2", $postbackNotice->getCustomParam("customParam2"));
     }
-
 
 
 }
