@@ -134,6 +134,18 @@ class PayLinkRequest
     }
 
     /**
+     * @param $accountNo
+     * @return $this
+     */
+    public function accountNo(
+        $accountNo
+    )
+    {
+        parent::set("accountNo", $accountNo);
+        return $this->this();
+    }
+
+    /**
      *
      * @return \CityPay\PayLink\PayLinkRequest
      */
