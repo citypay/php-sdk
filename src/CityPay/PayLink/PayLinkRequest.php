@@ -25,6 +25,18 @@ class PayLinkRequest
     }
 
     /**
+     * @param $accountNo
+     * @return $this
+     */
+    public function accountNo(
+        $accountNo
+    )
+    {
+        parent::set("accountNo", $accountNo);
+        return $this;
+    }
+
+    /**
      * @param $address
      * @return $this
      */
@@ -130,18 +142,6 @@ class PayLinkRequest
     )
     {
         parent::set("test", $test);
-        return $this->this();
-    }
-
-    /**
-     * @param $accountNo
-     * @return $this
-     */
-    public function accountNo(
-        $accountNo
-    )
-    {
-        parent::set("accountNo", $accountNo);
         return $this->this();
     }
 
