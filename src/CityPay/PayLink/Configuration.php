@@ -78,6 +78,38 @@ class Configuration
     }
 
     /**
+     * @param string $merchantLogo A URL of a merchant logo to include.
+     * The logo should be delivered over HTTPS and at a max file size of 20kb.
+     * Allowed MIME types being:
+     * - image/gif
+     * - image/png
+     * - image/jpg
+     * - image/jpeg
+     * 
+     * @return $this
+     */
+    public function merchantLogo(
+        $merchantLogo
+    ) {
+        self::set("merch_logo", $merchantLogo);
+        return $this;
+    }
+
+    /**
+     * @param string $merchantTerms A URL of the terms of payment that you wish
+     * to be confirmed. If provided, a link and checkbox will be added that
+     * will be required to be checked before payment may continue.
+     * 
+     * @return $this
+     */
+    public function merchantTerms(
+        $merchantTerms
+    ) {
+        self::set("merch_terms", $merchantTerms);
+        return $this;
+    }
+
+    /**
      * @param string $lockedParams
      * @return Configuration
      */
@@ -129,6 +161,22 @@ class Configuration
         $redirect
     ) {
         self::set("redirect", $redirect);
+        return $this;
+    }
+
+    /**
+     * @param int $redirectDelay The delay (in seconds) before the customers
+     * browser is redirected by the Paylink Payment Form on conclusion of a
+     * successful transaction.
+     * A value of 0 specifies immediate redirection.
+     * Leaving this field unset, or setting it to a negative value, specifies
+     * that no redirection should occur.
+     * @return $this
+     */
+    public function redirectDelay(
+        $redirectDelay
+    ) {
+        self::set("redirect_delay", $redirectDelay);
         return $this;
     }
 
