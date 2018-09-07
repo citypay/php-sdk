@@ -71,13 +71,18 @@ class Cardholder implements \CityPay\Lib\Security\PciDssLoggable {
     }
 
     /**
-     * @param string $title
-     * @return Cardholder
+     * @param string $mobile Any known mobile number of the card holder.
+     * This can be used for:
+     *  - Data collection via the Paylink Payment Form
+     *  - Optionally send an SMS on completion of a transaction. This feature
+     *  is a licensable option and is not configured by default.
+     * 
+     * @return $this
      */
-    public function title(
-        $title
+    public function mobile(
+        $mobile
     ) {
-        self::set("title", $title);
+        self::set("mobile", $mobile);
         return $this;
     }
 
@@ -89,6 +94,17 @@ class Cardholder implements \CityPay\Lib\Security\PciDssLoggable {
         $remoteAddress
     ) {
         self::set("remoteAddr", $remoteAddress);
+        return $this;
+    }
+
+    /**
+     * @param string $title
+     * @return Cardholder
+     */
+    public function title(
+        $title
+    ) {
+        self::set("title", $title);
         return $this;
     }
 

@@ -25,6 +25,18 @@ class PayLinkRequest
     }
 
     /**
+     * @param $accountNo
+     * @return $this
+     */
+    public function accountNo(
+        $accountNo
+    )
+    {
+        parent::set("accountNo", $accountNo);
+        return $this;
+    }
+
+    /**
      * @param $address
      * @return $this
      */
@@ -62,6 +74,20 @@ class PayLinkRequest
     }
 
     /**
+     * @param string $clientVersion An identifier used to specify the version
+     * of your application that has invoked the Paylink payment process.
+     * 
+     * @return $this
+     */
+    public function clientVersion(
+        $clientVersion
+    )
+    {
+        parent::set("clientVersion", $clientVersion);
+        return $this->this();
+    }
+
+    /**
      * @param \CityPay\PayLink\Configuration $configuration
      * @return \CityPay\PayLink\PayLinkRequest
      */
@@ -82,6 +108,21 @@ class PayLinkRequest
     )
     {
         parent::set("currency", $currencyCode);
+        return $this->this();
+    }
+
+    /**
+     * @param string $email An RFC 5322 compliant email address, used for the
+     * merchant to be notified on completion of the transaction.
+     * The value may be supplied to override the default stored value.
+     * 
+     * @return $this
+     */
+    public function email(
+        $email
+    )
+    {
+        parent::set("email", $email);
         return $this->this();
     }
 
@@ -130,18 +171,6 @@ class PayLinkRequest
     )
     {
         parent::set("test", $test);
-        return $this->this();
-    }
-
-    /**
-     * @param $accountNo
-     * @return $this
-     */
-    public function accountNo(
-        $accountNo
-    )
-    {
-        parent::set("accountNo", $accountNo);
         return $this->this();
     }
 
